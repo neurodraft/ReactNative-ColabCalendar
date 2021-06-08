@@ -30,11 +30,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
-
+import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 public class MainApplication extends Application implements ReactApplication {
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
-    new BasePackageList().getPackageList()
+    new BasePackageList().getPackageList(),
+    new ReactNativeFirebaseAppPackage()
   );
+ 
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override

@@ -20,7 +20,7 @@ export default function App() {
 
   const [notes, setNotes] = React.useState([]);
 
-  return (
+  return (   
     <NavigationContainer>
       <Tab.Navigator
       /*tabBar={props => <TabBar {...props}/>}*/
