@@ -1,4 +1,4 @@
-package com.calendar;
+package com.company.collabcalendar;
 
 import android.os.Bundle;
 

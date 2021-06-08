@@ -22,6 +22,7 @@ export default function CalendarScreen() {
         }}>
             {months[today.getMonth()]} &nbsp;
             {today.getFullYear()}
+            text
         </Text>
         <MyCalendar today={today}/>
     </View>

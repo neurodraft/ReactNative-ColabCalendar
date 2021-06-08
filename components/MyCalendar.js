@@ -119,6 +119,7 @@ class MyCalendar extends Component {
         return (
            <View>
                {rows}
+               <Text>Teste</Text>
            </View>
         )
     }

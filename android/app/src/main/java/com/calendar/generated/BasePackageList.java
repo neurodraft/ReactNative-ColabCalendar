@@ -1,4 +1,4 @@
-package com.calendar.generated;
+package com.company.collabcalendar.generated;
 
 import java.util.Arrays;
 import java.util.List;
