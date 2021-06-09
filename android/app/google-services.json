@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "400330200149",
+    "project_id": "collabcalendar-36957",
+    "storage_bucket": "collabcalendar-36957.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400330200149:android:36edb623d207edcb82f0dc",
+        "android_client_info": {
+          "package_name": "com.company.collabcalendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "400330200149-bhdhrotomagvs9jv2b8ot8sn2hqbid7p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmJF0TiK3u2a936XYZWvmeDA2scP74T18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "400330200149-bhdhrotomagvs9jv2b8ot8sn2hqbid7p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

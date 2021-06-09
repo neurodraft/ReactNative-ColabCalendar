@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 import styles from '../styles/global';
+import firebase from "../firebase";
 
 class MyCalendar extends Component {
 
@@ -10,13 +11,20 @@ class MyCalendar extends Component {
 
     nDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-
-    constructor(props = {today}) {
-        super({props})
+    
+    constructor(props) {
+        super(props)
         this.state = {
             activeDate: props.today,
             matrix: this.generateMatrix(props.today)
         };
+        firebase.firestore().collection('users').get().then(querySnapshot => {
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+            });
+        })
+
     }
 
     
@@ -73,43 +81,45 @@ class MyCalendar extends Component {
     }
 
     render() {
+       
         var rows = [];
-        rows = this.state.matrix.map((row, rowIndex) => {
-            var rowItems = row.map((item, colIndex) => {
-                return (
-                    <Text style = {{
-                        flex: 1,
-                        height: 18,
-                        textAlign: 'center',
-                        // Highlight header
-                        backgroundColor: rowIndex == 0 ? '#ddd' : '#fff',
-                        // Highlight Sundays
-                        color: colIndex == 0 ? '#a00' : '#000',
-                        // Highlight current date
-                        fontWeight: item == this.state.activeDate.getDate() ? 'bold' : ''
-                    }}
-                    onPress = {(item != -1 && rowIndex>0) ? () => this._onPress(item) : null}>
-                        {item != -1 ? item : ''}
-                    </Text>
-                );
-            });
-            return (
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    padding: 15,
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                }}>
-                    {rowItems}
-                </View>
-            )
+        // rows = this.state.matrix.map((row, rowIndex) => {
+        //     var rowItems = row.map((item, colIndex) => {
+        //         return (
+        //             <Text style = {{
+        //                 flex: 1,
+        //                 height: 18,
+        //                 textAlign: 'center',
+        //                 // Highlight header
+        //                 backgroundColor: rowIndex == 0 ? '#ddd' : '#fff',
+        //                 // Highlight Sundays
+        //                 color: colIndex == 0 ? '#a00' : '#000',
+        //                 // Highlight current date
+        //                 fontWeight: item == this.state.activeDate.getDate() ? 'bold' : ''
+        //             }}
+        //             onPress = {(item != -1 && rowIndex>0) ? () => this._onPress(item) : null}>
+        //                 {item != -1 ? item : ''}
+        //             </Text>
+        //         );
+        //     });
+        //     return (
+        //         <View style={{
+        //             flex: 1,
+        //             flexDirection: 'row',
+        //             padding: 15,
+        //             justifyContent: 'space-around',
+        //             alignItems: 'center',
+        //         }}>
+        //             {rowItems}
+        //         </View>
+        //     )
 
-        })
+        // })
 
         return (
            <View>
                {rows}
+               <Text>Teste</Text>
            </View>
         )
     }
