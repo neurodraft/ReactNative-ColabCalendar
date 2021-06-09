@@ -13,6 +13,8 @@ export default function CalendarScreen() {
 
     var today = new Date();
 
+    const [selectedMonth, setSelectedMonth] = useState(today.getMonth);
+
     return (
     <View style={styles.container}>
         <Text style = {{
