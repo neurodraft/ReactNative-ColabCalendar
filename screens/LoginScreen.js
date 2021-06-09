@@ -10,7 +10,7 @@ export default function LoginScreen({navigation}){
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
 
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    //firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
     return (
         <View style={styles.container}>
@@ -34,9 +34,9 @@ export default function LoginScreen({navigation}){
                     value={rememberMe}
                     onValueChange={(value) => {
                         setRememberMe(value);
-                        
+
                         if(value) firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-                        else firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+                        else firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
                     }}
                 />
                 <Text>Remember me?</Text>

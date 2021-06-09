@@ -117,9 +117,8 @@ class MyCalendar extends Component {
         })
 
         return (
-           <View>
+           <View style={{height: '80%', width:'80%'}}>
                {rows}
-               <Text>Teste</Text>
            </View>
         )
     }
