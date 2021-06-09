@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
+import { Button } from 'react-native-paper';
 
 import styles from '../styles/global'
+import firebase from '../firebase'
+
 
 class SettingsScreen extends Component {
 
@@ -11,6 +14,12 @@ class SettingsScreen extends Component {
                 <Text>
                     Settings Screen.
                 </Text>
+                <Button
+                    title="Logout"
+                    onPress={() => {
+                        firebase.auth().signOut();
+                    }}
+                />
             </View>
         )
     }
