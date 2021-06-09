@@ -83,38 +83,38 @@ class MyCalendar extends Component {
     render() {
        
         var rows = [];
-        // rows = this.state.matrix.map((row, rowIndex) => {
-        //     var rowItems = row.map((item, colIndex) => {
-        //         return (
-        //             <Text style = {{
-        //                 flex: 1,
-        //                 height: 18,
-        //                 textAlign: 'center',
-        //                 // Highlight header
-        //                 backgroundColor: rowIndex == 0 ? '#ddd' : '#fff',
-        //                 // Highlight Sundays
-        //                 color: colIndex == 0 ? '#a00' : '#000',
-        //                 // Highlight current date
-        //                 fontWeight: item == this.state.activeDate.getDate() ? 'bold' : ''
-        //             }}
-        //             onPress = {(item != -1 && rowIndex>0) ? () => this._onPress(item) : null}>
-        //                 {item != -1 ? item : ''}
-        //             </Text>
-        //         );
-        //     });
-        //     return (
-        //         <View style={{
-        //             flex: 1,
-        //             flexDirection: 'row',
-        //             padding: 15,
-        //             justifyContent: 'space-around',
-        //             alignItems: 'center',
-        //         }}>
-        //             {rowItems}
-        //         </View>
-        //     )
+        rows = this.state.matrix.map((row, rowIndex) => {
+            var rowItems = row.map((item, colIndex) => {
+                return (
+                    <Text style = {{
+                        flex: 1,
+                        height: 18,
+                        textAlign: 'center',
+                        // Highlight header
+                        backgroundColor: rowIndex == 0 ? '#ddd' : '#fff',
+                        // Highlight Sundays
+                        color: colIndex == 0 ? '#a00' : '#000',
+                        // Highlight current date
+                        fontWeight: item == this.state.activeDate.getDate() ? 'bold' : ''
+                    }}
+                    onPress = {(item != -1 && rowIndex>0) ? () => this._onPress(item) : null}>
+                        {item != -1 ? item : ''}
+                    </Text>
+                );
+            });
+            return (
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 15,
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                }}>
+                    {rowItems}
+                </View>
+            )
 
-        // })
+        })
 
         return (
            <View>

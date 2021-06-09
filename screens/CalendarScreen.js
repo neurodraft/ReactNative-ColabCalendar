@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {View, Text} from 'react-native';
 
 import MyCalendar from '../components/MyCalendar';
@@ -13,7 +13,7 @@ export default function CalendarScreen() {
 
     var today = new Date();
 
-    const [selectedMonth, setSelectedMonth] = useState(today.getMonth);
+    const [selectedMonth, setSelectedMonth] = useState(today.getMonth());
 
     return (
     <View style={styles.container}>
@@ -24,7 +24,6 @@ export default function CalendarScreen() {
         }}>
             {months[today.getMonth()]} &nbsp;
             {today.getFullYear()}
-            text
         </Text>
         <MyCalendar today={today}/>
     </View>
