@@ -11,19 +11,24 @@ class MyCalendar extends Component {
 
     nDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
+    matrix = [];
+
     
     constructor(props) {
         super(props)
-        this.state = {
-            activeDate: props.today,
-            matrix: this.generateMatrix(props.today)
-        };
-        firebase.firestore().collection('users').get().then(querySnapshot => {
+
+        /* this.state = {
+            selectedDate: props.selectedDate,
+        }; */
+
+        this.matrix = this.generateMatrix(this.props.selectedDate);
+        
+        /*firebase.firestore().collection('users').get().then(querySnapshot => {
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
             });
-        })
+        })*/
 
     }
 
@@ -72,18 +77,22 @@ class MyCalendar extends Component {
     }
 
     _onPress = (item) => {
-        this.setState(() => {
-            if (!item.match && item != -1) {
-                this.state.activeDate.setDate(item);
-                return this.state;
-            }
-        });
+        
+        if (!item.match && item != -1) {
+            this.props.setDay(item);
+        }
+
+    }
+
+    updateMatrix() {
+        this.matrix = this.generateMatrix(this.props.selectedDate);
     }
 
     render() {
-       
+
+
         var rows = [];
-        rows = this.state.matrix.map((row, rowIndex) => {
+        rows = this.matrix.map((row, rowIndex) => {
             var rowItems = row.map((item, colIndex) => {
                 return (
                     <Text style = {{
@@ -95,7 +104,7 @@ class MyCalendar extends Component {
                         // Highlight Sundays
                         color: colIndex == 0 ? '#a00' : '#000',
                         // Highlight current date
-                        fontWeight: item == this.state.activeDate.getDate() ? 'bold' : ''
+                        fontWeight: item == this.props.selectedDate.getDate() ? 'bold' : 'normal'
                     }}
                     onPress = {(item != -1 && rowIndex>0) ? () => this._onPress(item) : null}>
                         {item != -1 ? item : ''}
@@ -117,7 +126,7 @@ class MyCalendar extends Component {
         })
 
         return (
-           <View style={{height: '80%', width:'80%'}}>
+           <View style={{height: '80%', width:'80%'}}   >
                {rows}
            </View>
         )

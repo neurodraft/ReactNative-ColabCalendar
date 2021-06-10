@@ -10,7 +10,7 @@ import styles from './styles/global';
 
 //import TabBar from './components/TabBar'
 
-import CalendarScreen from './screens/CalendarScreen';
+import CalendarEventNavigator from './screens/CalendarEventNavigator';
 import SettingsScreen from './screens/SettingsScreen.js';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
@@ -29,7 +29,7 @@ export default function App() {
   const [user, setUser] = useState();
 
   firebase.auth().onAuthStateChanged(user => {
-    console.log(user)
+    //console.log(user)
     setUser(user);
 
   });
@@ -81,7 +81,7 @@ export default function App() {
         >
         <Tab.Screen
           name="Calendar"
-          component={CalendarScreen}
+          component={CalendarEventNavigator}
           options={{ title: 'Calendar' }}/>
         <Tab.Screen
           name="Settings"
