@@ -9,8 +9,7 @@ const Stack = createStackNavigator();
 
 export default function CalendarStack() {
     return (
-        <Stack.Navigator
-        >
+        <Stack.Navigator>
             <Stack.Screen
                 name="Calendar"
                 component={CalendarDrawer}

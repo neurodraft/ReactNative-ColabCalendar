@@ -69,6 +69,8 @@ class CalendarDrawer extends Component {
                         initialParams={{ calendar: calendar }}
                         options={{
                             headerShown: true,
+                            headerStyle: {backgroundColor: 'tomato'},
+                            headerTintColor: 'white',
                             headerRight: () => (
                                 <TouchableHighlight
                                     style={{marginRight: 10}}
@@ -76,7 +78,7 @@ class CalendarDrawer extends Component {
                                         this.props.navigation.navigate("New Calendar");
                                     }}
                                 >
-                                    <Ionicons name="create-outline" size={24} />
+                                    <Ionicons color="white" name="create-outline" size={24} />
                                 </TouchableHighlight>
                             ),
                         }}

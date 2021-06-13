@@ -18,7 +18,16 @@ class CalendarEventNavigator extends Component {
     render() {
         const { calendar } = this.props.route.params;
         return (
-            <Stack.Navigator>
+            <Stack.Navigator
+                screenOptions={{
+                    headerStyle: {
+                        height: 40
+                    },
+                    headerTitleStyle: {
+                        justifyContent: 'center'
+                    }
+                }}
+            >
                 <Stack.Screen
                     name="Calendar"
                     component={CalendarScreen}
@@ -35,7 +44,11 @@ class CalendarEventNavigator extends Component {
                     component={DaysEventsScreen}
                     options={{ title: "Day's Events" }}
                 />
-                <Stack.Screen name="New Event" component={NewEventScreen} />
+                <Stack.Screen
+                    name="New Event"
+                    component={NewEventScreen}
+                    options={{ title: "New Event" }}
+                />
             </Stack.Navigator>
         );
     }

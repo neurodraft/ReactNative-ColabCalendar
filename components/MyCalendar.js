@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component} from "react";
 import { View, Text } from "react-native";
 import styles from "../styles/global";
 import firebase from "../firebase";
@@ -8,7 +8,6 @@ class MyCalendar extends Component {
 
     nDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-    matrix = [];
 
     constructor(props) {
         super(props);
@@ -16,8 +15,9 @@ class MyCalendar extends Component {
         /* this.state = {
             selectedDate: props.selectedDate,
         }; */
-
-        this.matrix = this.generateMatrix(this.props.selectedDate);
+        this.state = {
+            matrix: this.generateMatrix(props.selectedDate())
+        }
 
         /*firebase.firestore().collection('users').get().then(querySnapshot => {
             querySnapshot.forEach((doc) => {
@@ -78,12 +78,19 @@ class MyCalendar extends Component {
     };
 
     updateMatrix() {
-        this.matrix = this.generateMatrix(this.props.selectedDate);
+        console.log(`Month is ${this.props.selectedDate().getMonth()}`);
+
+        this.setState({
+            ...this.state,
+            matrix: this.generateMatrix(this.props.selectedDate())
+        })
+        console.log('Matrix updated.');
+
     }
 
     render() {
         var rows = [];
-        rows = this.matrix.map((row, rowIndex) => {
+        rows = this.state.matrix.map((row, rowIndex) => {
             var rowItems = row.map((item, colIndex) => {
                 return (
                     <Text
@@ -97,7 +104,7 @@ class MyCalendar extends Component {
                             color: colIndex == 0 ? "#a00" : "#000",
                             // Highlight current date
                             fontWeight:
-                                item == this.props.selectedDate.getDate()
+                                item == this.props.selectedDate().getDate()
                                     ? "bold"
                                     : "normal",
                         }}
@@ -128,7 +135,7 @@ class MyCalendar extends Component {
             );
         });
 
-        return <View style={{ height: "80%", width: "80%" }}>{rows}</View>;
+        return <View style={{ height: "90%", width: "100%" }}>{rows}</View>;
     }
 }
 

@@ -40,11 +40,23 @@ class CalendarScreen extends Component {
                 day: this.state.selectedDate,
             });
         } else {
-            this.setState({
-                ...this.state,
-                selectedDate: date,
-            });
+            if(date.getMonth() == this.state.selectedDate.getMonth())
+                this.setState({
+                    ...this.state,
+                    selectedDate: date,
+                });
+            else
+                this.setState({
+                    ...this.state,
+                    selectedDate: date,
+                }, this.updateCalendarMonth);
         }
+    }
+
+    updateCalendarMonth() {
+        console.log(`Month is ${this.state.selectedDate.getMonth()}`);
+        console.log('Requesting matrix update...');
+        this.myCalendar.updateMatrix();
     }
 
     render() {
@@ -112,7 +124,6 @@ class CalendarScreen extends Component {
                             );
                             date.setMonth(date.getMonth() - 1);
                             this.setSelectedDate(date);
-                            this.myCalendar.updateMatrix();
                         }}
                     >
                         <Text
@@ -146,7 +157,6 @@ class CalendarScreen extends Component {
                             );
                             date.setMonth(date.getMonth() + 1);
                             this.setSelectedDate(date);
-                            this.myCalendar.updateMatrix();
                         }}
                     >
                         <Text
@@ -163,7 +173,7 @@ class CalendarScreen extends Component {
 
                 
                 <MyCalendar
-                    selectedDate={this.state.selectedDate}
+                    selectedDate={() => {return this.state.selectedDate;}}
                     setDay={(day) => {
                         var date = new Date(this.state.selectedDate.getTime());
                         date.setDate(day);
