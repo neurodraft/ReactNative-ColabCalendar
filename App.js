@@ -1,30 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Button, Text, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import styles from './styles/global';
 
-//import TabBar from './components/TabBar'
-
-import CalendarEventNavigator from './screens/CalendarEventNavigator';
 import SettingsScreen from './screens/SettingsScreen.js';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 
 
 import firebase from "./firebase";
+import CalendarStack from './screens/CalendarStack';
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
-  /* const auth = firebase.auth();
-  const firestore = firebase.firestore(); */
 
   const [user, setUser] = useState();
 
@@ -57,7 +50,6 @@ export default function App() {
   return (   
     <NavigationContainer>
       <Tab.Navigator
-      /*tabBar={props => <TabBar {...props}/>}*/
         screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
@@ -81,7 +73,7 @@ export default function App() {
         >
         <Tab.Screen
           name="Calendar"
-          component={CalendarEventNavigator}
+          component={CalendarStack}
           options={{ title: 'Calendar' }}/>
         <Tab.Screen
           name="Settings"

@@ -1,80 +1,113 @@
-import React, {useState} from 'react';
-import {View, Text, Button, TextInput, CheckBox} from 'react-native';
-import {Snackbar} from 'react-native-paper';
+import React, { useState } from "react";
+import { View, Text, Button, TextInput, CheckBox } from "react-native";
+import { Snackbar } from "react-native-paper";
 
-import firebase from '../firebase'
+import firebase from "../firebase";
 
-import styles from '../styles/global'
+import styles from "../styles/global";
 
-export default function SignupScreen({navigation}){
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [snackbar, setSnackbar] = useState({visible: false, message: ''});
+export default function SignupScreen({ navigation }) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [snackbar, setSnackbar] = useState({ visible: false, message: "" });
 
     return (
         <View style={styles.container}>
-            <View style={styles.inputView} >
-                <TextInput  
+            <View style={styles.inputView}>
+                <TextInput
                     style={styles.inputText}
-                    placeholder="Email" 
+                    placeholder="Email"
                     //placeholderTextColor="#003f5c"
-                    onChangeText={text => setEmail(text)}/>
-                
-                
+                    onChangeText={(text) => setEmail(text)}
+                />
             </View>
-            <View style={styles.inputView} >
-                <TextInput  
-                        style={styles.inputText}
-                        secureTextEntry={true}
-                        placeholder="Password" 
-                        //placeholderTextColor="#003f5c"
-                        onChangeText={text => setPassword(text)}/>
+            <View style={styles.inputView}>
+                <TextInput
+                    style={styles.inputText}
+                    secureTextEntry={true}
+                    placeholder="Password"
+                    //placeholderTextColor="#003f5c"
+                    onChangeText={(text) => setPassword(text)}
+                />
             </View>
-            <View style={styles.inputView} >
-                <TextInput  
-                        style={styles.inputText}
-                        secureTextEntry={true}
-                        placeholder="Verify password" 
-                        //placeholderTextColor="#003f5c"
-                        onChangeText={text => setPassword(text)}/>
+            <View style={styles.inputView}>
+                <TextInput
+                    style={styles.inputText}
+                    secureTextEntry={true}
+                    placeholder="Verify password"
+                    //placeholderTextColor="#003f5c"
+                    onChangeText={(text) => setPassword(text)}
+                />
             </View>
 
             <Button
                 title="Sign Up"
                 onPress={() => {
-                    firebase.auth()
-                    .createUserWithEmailAndPassword(email, password)
-                    .then(() => {
-                        console.log('User signed up');
-                        
-                    })
-                    .catch(error => {
-                        if (error.code === 'auth/operation-not-allowed') {
-                        console.log('Enable anonymous in your firebase console.');
-                        }
+                    firebase
+                        .auth()
+                        .createUserWithEmailAndPassword(email, password)
+                        .then((userCredential) => {
+                            console.log("User signed up");
 
-                        console.error(error);
-                        setSnackbar({visible: true, message: error.message});
-                    });
+                            var roles =  {};
+                            roles[userCredential.user.uid] = 'owner';
 
-                }}/>
+                            var calendar = {
+                                    title: "My Calendar",
+                                    description: "My Personal Calendar",
+                                    roles: roles,
+                            };
+
+                            console.dir(calendar);
+
+                            // Add a personal calendar to user
+                            firebase.firestore().collection("calendars")
+                                .add(calendar)
+                                .then(() => {
+                                    console.log(
+                                        "Document successfully written!"
+                                    );
+                                })
+                                .catch((error) => {
+                                    console.error(
+                                        "Error writing document: ",
+                                        error
+                                    );
+                                });
+                        })
+                        .catch((error) => {
+                            if (error.code === "auth/operation-not-allowed") {
+                                console.log(
+                                    "Enable anonymous in your firebase console."
+                                );
+                            }
+
+                            console.error(error);
+                            setSnackbar({
+                                visible: true,
+                                message: error.message,
+                            });
+                        });
+                }}
+            />
             <Button
                 title="Return to Login"
                 onPress={() => {
-                    navigation.goBack()
+                    navigation.goBack();
                 }}
             />
-           <Snackbar
+            <Snackbar
                 visible={snackbar.visible}
-                onDismiss={() => (setSnackbar({visible: false, message: ''}))}
+                onDismiss={() => setSnackbar({ visible: false, message: "" })}
                 action={{
-                    label: 'Close',
+                    label: "Close",
                     onPress: () => {
                         // Do something
                     },
-                }}>
+                }}
+            >
                 {snackbar.message}
             </Snackbar>
         </View>
-    )
+    );
 }
