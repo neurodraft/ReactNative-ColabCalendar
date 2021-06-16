@@ -55,15 +55,15 @@ export default function SignupScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-              <View style={{marginBottom : '20px'}}>
+              <View style={{marginBottom : 20}}>
                 <Title>Sign up</Title>
             </View>
-            <View style={{marginBottom : '20px'}}>              
+            <View style={{marginBottom : 20}}>              
                 <TextInput
                     mode="outlined"
                     label="Email..."
                     value={email}
-                    style={{marginBottom : '10px'}}
+                    style={{marginBottom : 10}}
                     onChangeText={v => setEmail(v)}
                 />
                 <TextInput
@@ -71,7 +71,7 @@ export default function SignupScreen({ navigation }) {
                     label="Password..."
                     secureTextEntry={true}
                     value={password}
-                    style={{marginBottom : '10px'}}
+                    style={{marginBottom : 10}}
                     onChangeText={v => setPassword(v)}
                 />                
                  <TextInput
@@ -82,12 +82,12 @@ export default function SignupScreen({ navigation }) {
                     onChangeText={v => setVerifyPassword(v)}
                 />                
             </View>
-            <View style={{marginBottom : '20px'}}>
+            <View style={{marginBottom : 20}}>
                 <Button mode="contained" onPress={() => signUp()}>
                     Sign up
                 </Button>
             </View>
-            <View style={{marginBottom : '20px'}}>
+            <View style={{marginBottom : 20}}>
                 <Button mode="text" onPress={() => navigation.navigate('login')}>
                     Log in
                 </Button>

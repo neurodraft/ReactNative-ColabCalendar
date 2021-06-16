@@ -24,15 +24,15 @@ export default function LoginScreen({navigation}){
 
     return (
         <View style={styles.container}>
-            <View style={{marginBottom : '20px'}}>
+            <View style={{marginBottom : 20}}>
                 <Title>Login</Title>
             </View>
-            <View style={{marginBottom : '20px'}}>              
+            <View style={{marginBottom : 20}}>              
                 <TextInput
                     mode="outlined"
                     label="Email..."
                     value={email}
-                    style={{marginBottom : '10px'}}
+                    style={{marginBottom : 10}}
                     onChangeText={v => setEmail(v)}
                 />
                 <TextInput
@@ -40,17 +40,17 @@ export default function LoginScreen({navigation}){
                     label="Password..."
                     value={password}
                     secureTextEntry={true}
-                    style={{marginBottom : '10px'}}
+                    style={{marginBottom : 10}}
                     onChangeText={v => setPassword(v)}
                 />
                 
             </View>
-            <View style={{marginBottom : '20px'}}>
+            <View style={{marginBottom : 20}}>
                 <Button mode="contained" onPress={() => logIn()}>
                     Log in
                 </Button>
             </View>
-            <View style={{marginBottom : '20px'}}>
+            <View style={{marginBottom : 20}}>
                 <Button mode="text" onPress={() => navigation.navigate('signup')}>
                     Sign up
                 </Button>
