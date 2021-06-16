@@ -13,15 +13,6 @@ export default function LoginScreen({navigation}){
 
     const [snackbar, setSnackbar] = useState({ visible: false, message: "" });
 
-    const logIn = () =>  firebase.auth()
-            .signInWithEmailAndPassword(email, password)
-                .then(ok => console.log(ok))
-                .catch(({message}) => setSnackbar({
-                        visible: true,
-                        message: message,
-                    })
-                );
-
     return (
         <View style={styles.fullPageContainer}>
         
@@ -47,7 +38,16 @@ export default function LoginScreen({navigation}){
                 
             </View>
             <View style={{marginBottom : 20}}>
-                <Button mode="contained" onPress={() => logIn()}>
+                <Button mode="contained" onPress={() => {
+                    firebase.auth()
+                    .signInWithEmailAndPassword(email, password)
+                        .then(ok => console.log(ok))
+                        .catch(({message}) => setSnackbar({
+                                visible: true,
+                                message: message,
+                            })
+                        );
+                }}>
                     Log in
                 </Button>
             </View>
