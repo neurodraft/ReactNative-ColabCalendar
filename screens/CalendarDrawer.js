@@ -38,7 +38,11 @@ class CalendarDrawer extends Component {
                     // doc.data() is never undefined for query doc snapshots
                     //console.log(doc.id, " => ", doc.data());
                     //console.dir(doc.data());
-                    this.addCalendar(doc.data());
+                    var calendar = {
+                        ...(doc.data()),
+                        id: doc.id
+                    }
+                    this.addCalendar(calendar);
                 });
                 console.dir(this.state.calendars);
             })

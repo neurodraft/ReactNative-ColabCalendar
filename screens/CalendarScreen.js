@@ -37,7 +37,8 @@ class CalendarScreen extends Component {
         if (date.toDateString() == this.state.selectedDate.toDateString()) {
             console.log("Opening day...");
             this.props.navigation.navigate("Day's Events", {
-                day: this.state.selectedDate,
+                day: this.state.selectedDate.getTime(),
+                calendar: this.props.route.params.calendar
             });
         } else {
             if(date.getMonth() == this.state.selectedDate.getMonth())

@@ -7,7 +7,7 @@ import styles from '../styles/global';
 
 export default function DaysEventsScreen({route, navigation}) {
 
-    const { day } = route.params;
+    const { day, calendar} = route.params;
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     return (
@@ -17,13 +17,13 @@ export default function DaysEventsScreen({route, navigation}) {
             fontSize: 24,
             fontWeight: 'bold'
         }}>
-            {day.toDateString()}
+            {new Date(day).toDateString()}
         </Text>
 
         <Button
             title="New Event"
             onPress={() => {
-                navigation.navigate('New Event', {day: day});
+                navigation.navigate('New Event', {day: day, calendar: calendar});
             }}
         />
     </View>

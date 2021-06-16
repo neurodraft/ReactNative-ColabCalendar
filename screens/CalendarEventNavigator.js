@@ -34,9 +34,6 @@ class CalendarEventNavigator extends Component {
                     options={{ headerShown: false }}
                     initialParams={{
                         calendar: calendar,
-                        toggleDrawer: () => {
-                            this.props.navigation.toggleDrawer();
-                        },
                     }}
                 />
                 <Stack.Screen

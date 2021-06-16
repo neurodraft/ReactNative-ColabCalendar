@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Platform, ScrollView } from "react-native";
 import { TextInput, HelperText, Button } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -9,16 +9,23 @@ import Strings from "../constants/strings";
 import firebase from "../firebase";
 
 export default function NewEventScreen({ route, navigation }) {
-    const { day } = route.params;
+    const { day, calendar } = route.params;
 
     const [titleError, setTitleError] = useState("");
     const [title, setTitle] = useState("");
+    
+    var initialDate = new Date(day);
+    initialDate.setSeconds(0);
+
+    const [date, setDate] = useState(initialDate);
+
+    const [datePickerVisible, setDatePickerVisible] = useState(false);
 
     const [desc, setDesc] = useState("");
 
     return (
         <View style={styles.container}>
-            <View style={formStyles.formContainer}>
+            <ScrollView style={formStyles.formContainer}>
                 <View style={formStyles.formElement}>
                     <TextInput
                         mode="outlined"
@@ -28,7 +35,9 @@ export default function NewEventScreen({ route, navigation }) {
                         onChangeText={(value) => setTitle(value)}
                         //placeholder={Strings.evEventTitle}
                     />
-                    <HelperText type="error" visible={titleError != ""}>{titleError}</HelperText>
+                    <HelperText type="error" visible={titleError != ""}>
+                        {titleError}
+                    </HelperText>
                 </View>
 
                 <View style={formStyles.formElement}>
@@ -47,13 +56,31 @@ export default function NewEventScreen({ route, navigation }) {
                     <TextInput
                         mode="outlined"
                         label={Strings.evEventDate}
-                        value={day.toDateString()}
+                        value={`${date.toDateString()} - ${date.toLocaleTimeString()}`}
                         disabled={true}
                     />
+                    <Button
+                        onPress={() => {
+                            setDatePickerVisible(true);
+                        }}
+                    >
+                        Set Time
+                    </Button>
                 </View>
-            </View>
+            </ScrollView>
 
             <View style={formStyles.formButtons}>
+                <Button
+                    mode="contained"
+                    color="grey"
+                    labelStyle={{ color: "white" }}
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                >
+                    {Strings.genCancel}
+                </Button>
+
                 <Button
                     mode="contained"
                     onPress={() => {
@@ -61,11 +88,44 @@ export default function NewEventScreen({ route, navigation }) {
                             setTitleError(Strings.evNoTitle);
                             return;
                         }
+
+                        firebase
+                            .firestore()
+                            .collection("calendars")
+                            .doc(calendar.id)
+                            .collection("events")
+                            .add({
+                                title: title,
+                                desc: desc,
+                                date: date,
+                            })
+                            .then((docRef) => {
+                                console.log(
+                                    "Document written with ID: ",
+                                    docRef.id
+                                );
+                                navigation.goBack();
+                            })
+                            .catch((error) => {
+                                console.error("Error adding document: ", error);
+                            });
                     }}
                 >
                     {Strings.evCreateEvent}
                 </Button>
             </View>
+
+            {Platform.OS !== "web" && datePickerVisible && (
+                <DateTimePicker
+                    value={date}
+                    mode="time"
+                    onChange={(event, selectedDate) => {
+                        setDatePickerVisible(false);
+                        setDate(selectedDate || date);
+                    }}
+                
+                />
+            )}
 
             {/*<DateTimePicker value={day} mode='date'/>*/}
         </View>

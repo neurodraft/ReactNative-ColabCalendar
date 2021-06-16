@@ -4,9 +4,10 @@ const styles = StyleSheet.create({
 
     formContainer: {
       marginTop: 20,
-      width: "80%",
+      width: "100%",
+      paddingLeft: 40,
+      paddingRight: 40,
       flex: 1,
-
     },
 
     formElement: {
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
     },
 
     formButtons: {
+      width: "100%",
       padding: 20,
       flexDirection: "row",
       alignItems: "center",
