@@ -7,6 +7,7 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
     "@react-firebase/auth": "^0.2.2",
     "@react-firebase/database": "^0.2.13",
     "@react-native-community/datetimepicker": "^3.5.2",
@@ -22,11 +23,15 @@
     "expo-status-bar": "~1.0.4",
     "expo-updates": "~0.5.4",
     "firebase": "8.2.3",
+    "patch-package": "^6.4.7",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-localization": "^1.0.17",
     "react-native": "~0.63.4",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-material-textfield": "^0.16.1",
+    "react-native-material-textfield-plus": "^0.17.0",
     "react-native-paper": "^4.9.1",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
