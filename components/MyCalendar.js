@@ -33,13 +33,6 @@ class MyCalendar extends Component {
         // Get number of days in month
         const maxDays = new Date(year, month, 0).getDate()
 
-        if (month == 1) {
-            // February
-            if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
-                maxDays += 1;
-            }
-        }
-
         // Populate matrix
         var counter = 1;
         for (var row = 1; row < 7; row++) {
