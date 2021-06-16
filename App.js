@@ -15,10 +15,6 @@ import SignupScreen from './screens/SignupScreen';
 
 import firebase from "./firebase";
 import CalendarStack from './screens/CalendarStack';
-import { LogBox } from 'react-native';
-
-LogBox.ignoreLogs(['Setting a timer']);
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

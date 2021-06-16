@@ -5,15 +5,23 @@ import firebase from '../firebase';
 
 export default function DaysEventsScreen({route, navigation}) {
 
-    const { day } = route.params;
+    const { day, calendar} = route.params;
+
+    const date = new Date(day)
 
     return (
         <View style={{
             backgroundColor : '#fff',
             flex : 1
         }}>
+             <Button
+            title="New Event"
+                onPress={() => {
+                    navigation.navigate('New Event', {day: day, calendar: calendar});
+                }}
+            />
             <List.Section>
-            <List.Subheader>{day.toDateString()}</List.Subheader>
+            <List.Subheader>{date.toDateString()}</List.Subheader>
             <List.Item title="First Item" left={() => <List.Icon icon="folder" />} />
             <List.Item
                 title="Second Item"
