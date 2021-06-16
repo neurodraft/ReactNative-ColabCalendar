@@ -1,70 +1,71 @@
 import React, {useState} from 'react';
-import {View, Text, Button, TextInput, CheckBox} from 'react-native';
+import { View } from 'react-native';
+import { Snackbar, Title, TextInput, Button} from "react-native-paper";
 
-import firebase from '../firebase'
+import firebase from '../firebase';
 
-import styles from '../styles/global'
+import styles from "../styles/global";
 
 export default function LoginScreen({navigation}){
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
 
-    //firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    const [snackbar, setSnackbar] = useState({ visible: false, message: "" });
+
+    const logIn = () =>  firebase.auth()
+            .signInWithEmailAndPassword(email, password)
+                .then(ok => console.log(ok))
+                .catch(({message}) => setSnackbar({
+                        visible: true,
+                        message: message,
+                    })
+                );
 
     return (
         <View style={styles.container}>
-            <View style={styles.inputView} >
-                <TextInput  
-                    style={styles.inputText}
-                    placeholder="Email" 
-                    onChangeText={text => setEmail(text)}/>
-                
-                
+            <View style={{marginBottom : '20px'}}>
+                <Title>Login</Title>
             </View>
-            <View style={styles.inputView} >
-                <TextInput  
-                        style={styles.inputText}
-                        secureTextEntry={true}
-                        placeholder="Password" 
-                        onChangeText={text => setPassword(text)}/>
-            </View>
-            <View>
-                <CheckBox
-                    value={rememberMe}
-                    onValueChange={(value) => {
-                        setRememberMe(value);
-
-                        if(value) firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-                        else firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
-                    }}
+            <View style={{marginBottom : '20px'}}>              
+                <TextInput
+                    mode="outlined"
+                    label="Email..."
+                    value={email}
+                    style={{marginBottom : '10px'}}
+                    onChangeText={v => setEmail(v)}
                 />
-                <Text>Remember me?</Text>
+                <TextInput
+                    mode="outlined"
+                    label="Password..."
+                    value={password}
+                    secureTextEntry={true}
+                    style={{marginBottom : '10px'}}
+                    onChangeText={v => setPassword(v)}
+                />
+                
             </View>
-            <Button
-                title="Login"
-                onPress={() => {
-                    firebase.auth()
-                    .signInWithEmailAndPassword(email, password)
-                    .then(() => {
-                        console.log('User signed in anonymously');
-                    })
-                    .catch(error => {
-                        if (error.code === 'auth/operation-not-allowed') {
-                        console.log('Enable anonymous in your firebase console.');
-                        }
-
-                        console.error(error);
-                    });
-
-                }}/>
-            <Button
-                title="Sign Up"
-                onPress={() => {
-                    navigation.navigate('Sign Up')
-                }}
-            />
-           
+            <View style={{marginBottom : '20px'}}>
+                <Button mode="contained" onPress={() => logIn()}>
+                    Log in
+                </Button>
+            </View>
+            <View style={{marginBottom : '20px'}}>
+                <Button mode="text" onPress={() => navigation.navigate('signup')}>
+                    Sign up
+                </Button>
+            </View>
+            <Snackbar
+                visible={snackbar.visible}
+                onDismiss={() => setSnackbar({ visible: false, message: "" })}
+                action={{
+                    label: "Close",
+                    onPress: () => {
+                        // Do something
+                    },
+                }}>
+                {snackbar.message}
+            </Snackbar>
         </View>
     )
 }

@@ -1,101 +1,97 @@
+
 import React, { useState } from "react";
-import { View, Text, Button, TextInput, CheckBox } from "react-native";
-import { Snackbar } from "react-native-paper";
+import { View} from "react-native";
+import { Snackbar, Title, TextInput, Button} from "react-native-paper";
 
 import firebase from "../firebase";
+import Calendar from '../services/Calendar';
 
 import styles from "../styles/global";
 
 export default function SignupScreen({ navigation }) {
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [verifyPassword, setVerifyPassword] = useState("");
     const [snackbar, setSnackbar] = useState({ visible: false, message: "" });
+
+    const signUp = () => {
+
+        if([email, password, verifyPassword].some(input => !input))return setSnackbar({
+            visible: true,
+            message: "Campos em branco",
+        });
+
+        if(password != verifyPassword) {
+            return setSnackbar({
+                visible: true,
+                message: "A confirmação da senha não corresponde",
+            });
+        }
+
+        firebase.auth()
+            .createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                   
+                    Calendar.new({
+                        title: "My Calendar",
+                        description: "My Personal Calendar",
+                        roles: {
+                            [userCredential.user.uid] : 'owner'
+                        }
+                    }).then(created => {
+
+                    }).catch(({message}) => setSnackbar({
+                        visible: true,
+                        message: message,
+                    }));
+
+                })
+                .catch(({message}) => setSnackbar({
+                        visible: true,
+                        message: message,
+                    }));
+    }
 
     return (
         <View style={styles.container}>
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.inputText}
-                    placeholder="Email"
-                    //placeholderTextColor="#003f5c"
-                    onChangeText={(text) => setEmail(text)}
-                />
+              <View style={{marginBottom : '20px'}}>
+                <Title>Sign up</Title>
             </View>
-            <View style={styles.inputView}>
+            <View style={{marginBottom : '20px'}}>              
                 <TextInput
-                    style={styles.inputText}
+                    mode="outlined"
+                    label="Email..."
+                    value={email}
+                    style={{marginBottom : '10px'}}
+                    onChangeText={v => setEmail(v)}
+                />
+                <TextInput
+                    mode="outlined"
+                    label="Password..."
                     secureTextEntry={true}
-                    placeholder="Password"
-                    //placeholderTextColor="#003f5c"
-                    onChangeText={(text) => setPassword(text)}
-                />
-            </View>
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.inputText}
+                    value={password}
+                    style={{marginBottom : '10px'}}
+                    onChangeText={v => setPassword(v)}
+                />                
+                 <TextInput
+                    mode="outlined"
+                    label="Verify password..."
                     secureTextEntry={true}
-                    placeholder="Verify password"
-                    //placeholderTextColor="#003f5c"
-                    onChangeText={(text) => setPassword(text)}
-                />
+                    value={verifyPassword}
+                    onChangeText={v => setVerifyPassword(v)}
+                />                
             </View>
-
-            <Button
-                title="Sign Up"
-                onPress={() => {
-                    firebase
-                        .auth()
-                        .createUserWithEmailAndPassword(email, password)
-                        .then((userCredential) => {
-                            console.log("User signed up");
-
-                            var roles =  {};
-                            roles[userCredential.user.uid] = 'owner';
-
-                            var calendar = {
-                                    title: "My Calendar",
-                                    description: "My Personal Calendar",
-                                    roles: roles,
-                            };
-
-                            console.dir(calendar);
-
-                            // Add a personal calendar to user
-                            firebase.firestore().collection("calendars")
-                                .add(calendar)
-                                .then(() => {
-                                    console.log(
-                                        "Document successfully written!"
-                                    );
-                                })
-                                .catch((error) => {
-                                    console.error(
-                                        "Error writing document: ",
-                                        error
-                                    );
-                                });
-                        })
-                        .catch((error) => {
-                            if (error.code === "auth/operation-not-allowed") {
-                                console.log(
-                                    "Enable anonymous in your firebase console."
-                                );
-                            }
-
-                            console.error(error);
-                            setSnackbar({
-                                visible: true,
-                                message: error.message,
-                            });
-                        });
-                }}
-            />
-            <Button
-                title="Return to Login"
-                onPress={() => {
-                    navigation.goBack();
-                }}
-            />
+            <View style={{marginBottom : '20px'}}>
+                <Button mode="contained" onPress={() => signUp()}>
+                    Sign up
+                </Button>
+            </View>
+            <View style={{marginBottom : '20px'}}>
+                <Button mode="text" onPress={() => navigation.navigate('login')}>
+                    Log in
+                </Button>
+            </View>
             <Snackbar
                 visible={snackbar.visible}
                 onDismiss={() => setSnackbar({ visible: false, message: "" })}

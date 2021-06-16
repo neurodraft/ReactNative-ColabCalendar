@@ -5,6 +5,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import HomeScreen from './screens/Home';
+import SignInScreen from './screens/SignIn';
+
 import SettingsScreen from './screens/SettingsScreen.js';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
@@ -20,30 +23,26 @@ const Stack = createStackNavigator();
 export default function App() {
 
   const [user, setUser] = useState();
-
-  firebase.auth().onAuthStateChanged(user => {
-    //console.log(user)
-    setUser(user);
-
-  });
-
+  
+  firebase.auth().onAuthStateChanged(user => setUser(user));
+  
   if (!user) {
+
     return (
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
-            name="Login"
+            name="login"
             component={LoginScreen}
-            options={{ title: 'Login' }}
+            options={{ title: 'Login', headerShown : false }}
           />
           <Stack.Screen
-            name="Sign Up"
+            name="signup"
             component={SignupScreen}
-            options={{ title: 'Sign Up' }}
+            options={{ title: 'Sign Up', headerShown : false }}
           />
         </Stack.Navigator>
       </NavigationContainer>
-
     );
   }
 

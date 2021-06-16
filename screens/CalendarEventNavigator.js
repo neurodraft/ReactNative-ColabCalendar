@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import CalendarScreen from "./CalendarScreen";
 import DaysEventsScreen from "./DaysEventsScreen";
 import NewEventScreen from "./NewEventScreen";
+
 import firebase from "../firebase";
 
 const Stack = createStackNavigator();

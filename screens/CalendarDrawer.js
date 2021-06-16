@@ -75,7 +75,7 @@ class CalendarDrawer extends Component {
                                 <TouchableHighlight
                                     style={{marginRight: 10}}
                                     onPress={() => {
-                                        this.props.navigation.navigate("New Calendar");
+                                        this.props.navigation.navigate("Edit Calendar", {calendar : calendar});
                                     }}
                                 >
                                     <Ionicons color="white" name="create-outline" size={24} />
@@ -86,8 +86,6 @@ class CalendarDrawer extends Component {
                     />
                 );
             });
-
-            console.dir;
 
             return (
                 <Drawer.Navigator

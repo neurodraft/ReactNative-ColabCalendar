@@ -28,6 +28,7 @@ class CalendarScreen extends Component {
 
     constructor(props) {
         super(props);
+       
         this.state = {
             selectedDate: new Date(),
         };

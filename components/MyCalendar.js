@@ -6,25 +6,14 @@ import firebase from "../firebase";
 class MyCalendar extends Component {
     weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    nDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
 
     constructor(props) {
-        super(props);
 
-        /* this.state = {
-            selectedDate: props.selectedDate,
-        }; */
+        super(props);
+        
         this.state = {
             matrix: this.generateMatrix(props.selectedDate())
         }
-
-        /*firebase.firestore().collection('users').get().then(querySnapshot => {
-            querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                console.log(doc.id, " => ", doc.data());
-            });
-        })*/
     }
 
     generateMatrix(today) {
@@ -37,11 +26,13 @@ class MyCalendar extends Component {
         var month = today.getMonth();
 
         // Get day of the week of first day of month
-        var firstDay = new Date(year, month, 1).getDay();
-        //console.log(firstDay);
+        const date = new Date(year, month);
+
+        var firstDay = date.getDay();
 
         // Get number of days in month
-        var maxDays = this.nDays[month];
+        const maxDays = new Date(year, month, 0).getDate()
+
         if (month == 1) {
             // February
             if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
