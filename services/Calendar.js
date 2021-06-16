@@ -3,10 +3,9 @@ import firebase from "../firebase";
 
 export default new (function(){
 
-    const collection = 'calendars'
+    const collection = 'calendars';
 
-    this.new = calendar => firebase.firestore().collection(collection).add(calendar)
-
+    this.new = calendar => firebase.firestore().collection(collection).add(calendar);    
     
     return this;
 })
