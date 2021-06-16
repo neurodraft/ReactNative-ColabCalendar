@@ -54,8 +54,8 @@ export default function SignupScreen({ navigation }) {
     }
 
     return (
-        <View style={styles.container}>
-              <View style={{marginBottom : 20}}>
+        <View style={styles.fullPageContainer}>
+              <View style={{marginBottom : 20, alignItems: 'center'}}>
                 <Title>Sign up</Title>
             </View>
             <View style={{marginBottom : 20}}>              

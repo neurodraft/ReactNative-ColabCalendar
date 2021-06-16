@@ -9,6 +9,7 @@ import SettingsScreen from './screens/SettingsScreen.js';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 
+import {View, Text} from 'react-native';
 
 import firebase from "./firebase";
 import CalendarStack from './screens/CalendarStack';
@@ -23,10 +24,10 @@ export default function App() {
   firebase.auth().onAuthStateChanged(user => setUser(user));
   
   if (!user) {
-
+    
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="login">
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -40,6 +41,8 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     );
+    
+   
   }
 
   return (   

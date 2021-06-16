@@ -7,6 +7,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    fullPageContainer: {
+      flex: 1,
+      backgroundColor: '#fff',
+      justifyContent: 'center',
+      padding: 40,
+    },
     inputView:{
         width:"80%",
         backgroundColor:"lightgrey",
