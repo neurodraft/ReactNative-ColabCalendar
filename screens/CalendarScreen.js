@@ -182,6 +182,7 @@ class CalendarScreen extends Component {
                         console.dir(date);
                         this.setSelectedDate(date);
                     }}
+                    calendar={this.props.route.params.calendar}
                     ref={(myCalendar) => {
                         this.myCalendar = myCalendar;
                     }}

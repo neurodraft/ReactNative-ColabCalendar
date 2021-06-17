@@ -15,7 +15,7 @@ export default function LoginScreen({navigation}){
 
     return (
         <View style={styles.fullPageContainer}>
-        
+
             <View style={{marginBottom : 20, alignItems: 'center'}}>
                 <Title>Login</Title>
             </View>
