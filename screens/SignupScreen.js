@@ -5,6 +5,7 @@ import { Snackbar, Title, TextInput, Button} from "react-native-paper";
 
 import firebase from "../firebase";
 import Calendar from '../services/Calendar';
+import User from "../services/User";
 
 import styles from "../styles/global";
 
@@ -32,13 +33,19 @@ export default function SignupScreen({ navigation }) {
         firebase.auth()
             .createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                   
+                    User.new(userCredential.user.uid, {
+                        id: userCredential.user.uid,
+                        email: email
+                    });
+                    
+
                     Calendar.new({
                         title: "My Calendar",
                         description: "My Personal Calendar",
                         roles: {
                             [userCredential.user.uid] : 'owner'
                         }
+
                     }).then(created => {
 
                     }).catch(({message}) => setSnackbar({
