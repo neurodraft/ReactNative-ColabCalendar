@@ -48,6 +48,14 @@ export default new LocalizedStrings({
         evNoTitle: 'The event must have a title.',
         evEventDate: 'Event Date',
 
+         // Calendars
+         calCalendars: 'Calendars',
+         calNewCalendar: 'New Calendar',
+         calCalendarTitle: 'Calendar Title',
+         calCalendarDesc: 'Calendar Description',
+         calCreateCal: 'Create Calendar',
+         calNoTitle: 'The calendar must have a title.',
+
         
 
 

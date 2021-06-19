@@ -11,44 +11,49 @@ import {
 
 import firebase from "../firebase";
 import CalendarEventNavigator from "./CalendarEventNavigator";
-import { View, Button, TouchableHighlight} from "react-native";
+import { View, Button, TouchableHighlight } from "react-native";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
-
 
 const Drawer = createDrawerNavigator();
 
 class CalendarDrawer extends Component {
+    unsubscribeListener;
+
     constructor(props) {
         super(props);
         this.state = {
             calendars: [],
         };
+    }
 
-        firebase
+    componentDidMount() {
+        this.unsubscribeListener = firebase
             .firestore()
             .collection("calendars")
             .where(`roles.${firebase.auth().currentUser.uid}`, "in", [
                 "owner",
                 "collaborator",
             ])
-            .get()
-            .then((querySnapshot) => {
+            .onSnapshot((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
                     //console.log(doc.id, " => ", doc.data());
                     //console.dir(doc.data());
                     var calendar = {
-                        ...(doc.data()),
-                        id: doc.id
-                    }
+                        ...doc.data(),
+                        id: doc.id,
+                    };
                     this.addCalendar(calendar);
                 });
                 console.dir(this.state.calendars);
-            })
-            .catch((error) => {
-                console.log("Error getting documents: ", error);
             });
+    }
+
+    componentWillUnmount(){
+        if(!!this.unsubscribeListener){
+            this.unsubscribeListener();
+        }
     }
 
     addCalendar(calendar) {
@@ -73,16 +78,23 @@ class CalendarDrawer extends Component {
                         initialParams={{ calendar: calendar }}
                         options={{
                             headerShown: true,
-                            headerStyle: {backgroundColor: 'tomato'},
-                            headerTintColor: 'white',
+                            headerStyle: { backgroundColor: "tomato" },
+                            headerTintColor: "white",
                             headerRight: () => (
                                 <TouchableHighlight
-                                    style={{marginRight: 10}}
+                                    style={{ marginRight: 10 }}
                                     onPress={() => {
-                                        this.props.navigation.navigate("Edit Calendar", {calendar : calendar});
+                                        this.props.navigation.navigate(
+                                            "Edit Calendar",
+                                            { calendar: calendar }
+                                        );
                                     }}
                                 >
-                                    <Ionicons color="white" name="create-outline" size={24} />
+                                    <Ionicons
+                                        color="white"
+                                        name="create-outline"
+                                        size={24}
+                                    />
                                 </TouchableHighlight>
                             ),
                         }}

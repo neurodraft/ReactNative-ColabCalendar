@@ -12,8 +12,10 @@ import SignupScreen from "./screens/SignupScreen";
 import { View, Text } from "react-native";
 
 import firebase from "./firebase";
+import Strings from './constants/strings';
 import CalendarStack from "./screens/CalendarStack";
 import { Title } from "react-native-paper";
+import InvitesScreen from "./screens/InvitesScreen.js";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -71,6 +73,10 @@ export default function App() {
                             iconName = focused
                                 ? "settings"
                                 : "settings-outline";
+                        } else if (route.name === "Invites") {
+                            iconName = focused
+                                ? "mail"
+                                : "mail-outline";
                         }
 
                         // You can return any component that you like here!
@@ -92,6 +98,11 @@ export default function App() {
                     name="Calendar"
                     component={CalendarStack}
                     options={{ title: "Calendar" }}
+                />
+                <Tab.Screen
+                    name="Invites"
+                    component={InvitesScreen}
+                    options={{ title: "Invites" }}
                 />
                 <Tab.Screen
                     name="Settings"

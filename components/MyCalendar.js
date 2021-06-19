@@ -7,6 +7,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 class MyCalendar extends Component {
     weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+    unsubscribeListener;
+
     constructor(props) {
         super(props);
 
@@ -15,14 +17,16 @@ class MyCalendar extends Component {
             events: [],
         };
 
-        firebase
+        
+    }
+
+    componentDidMount(){
+        this.unsubscribeListener = firebase
             .firestore()
             .collection("calendars")
             .doc(this.props.calendar.id)
             .collection("events")
-            .orderBy("date")
-            .get()
-            .then((querySnapshot) => {
+            .onSnapshot((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
                     console.log(doc.id, " => ", doc.data());
@@ -31,10 +35,13 @@ class MyCalendar extends Component {
                         events: [...this.state.events, doc.data()],
                     });
                 });
-            })
-            .catch((error) => {
-                console.log("Error getting documents: ", error);
             });
+    }
+
+    componentWillUnmount(){
+        if(!!this.unsubscribeListener){
+            this.unsubscribeListener();
+        }
     }
 
     areThereEvents(day) {
@@ -70,7 +77,7 @@ class MyCalendar extends Component {
         var firstDay = date.getDay();
 
         // Get number of days in month
-        const maxDays = new Date(year, month, 0).getDate();
+        const maxDays = new Date(year, month+1, 0).getDate();
 
         // Populate matrix
         var counter = 1;
