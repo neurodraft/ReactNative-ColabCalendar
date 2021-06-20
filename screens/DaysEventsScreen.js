@@ -122,7 +122,6 @@ export default class DaysEventsScreen extends Component {
         )
     }
 
-
     onDeleteEvent(){
 
         firebase

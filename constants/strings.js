@@ -53,17 +53,10 @@ export default new LocalizedStrings({
         evNoTitle: 'The event must have a title.',
         evEventDate: 'Event Date',
 
-         // Calendars
-         calCalendars: 'Calendars',
-         calNewCalendar: 'New Calendar',
-         calCalendarTitle: 'Calendar Title',
-         calCalendarDesc: 'Calendar Description',
-         calCreateCal: 'Create Calendar',
-         calNoTitle: 'The calendar must have a title.',
-         calEditCal: 'Edit Calendar',
-
-        
-
+        // Calendars
+        calNewCalendar : 'New Calendar',
+        calendarTitle: 'Calendar Title',
+        calendarDesc: 'Calendar Description',
 
         // Errors
         errEmail: 'Invalid email',
@@ -128,7 +121,8 @@ export default new LocalizedStrings({
         hoSettings: 'Definições',
         hoNofitications: 'Notificações',
 
-
+        calendarTitle: 'Título do calendário',
+        calendarDesc: 'Descrição do calendário',
         // Errors
         errEmail: 'Email inválido',
         errPassword: 'Palavra-passe inválida',
@@ -155,6 +149,9 @@ export default new LocalizedStrings({
         evEditEvent: 'Editar evento',
         deleted : 'Deletado com successo',
         edited : 'Editado com sucesso',
-        emptyResults : 'Nenhum resultado encontrado...'
+        emptyResults : 'Nenhum resultado encontrado...',
+        calDel : 'Deletar calendar',
+
+        calNewCalendar : 'Adicionar calendário'
     },
 })

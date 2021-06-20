@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, View, ScrollView } from "react-native";
-import { TextInput, HelperText, Button } from "react-native-paper";
+import { TextInput, HelperText, Button, Paragraph, Dialog } from "react-native-paper";
 
 import styles from "../styles/global";
 import formStyles from "../styles/form";
@@ -15,6 +15,30 @@ export default function EditCalendarScreen({ route, navigation}) {
     const [title, setTitle] = useState(calendar.title);
     const [titleError, setTitleError] = useState("");
     const [desc, setDesc] = useState(calendar.desc);
+    const [dialogDelete, setDialogDelete] = useState({ show: false, message: "" })
+
+    const onDelete = () => {
+
+        firebase
+            .firestore()
+            .collection("calendars")
+            .doc(calendar.id)               
+                .delete()
+                .then(deleted => {
+                    setDialogDelete({
+                        show : true,
+                        message : Strings.deleted,
+                    });
+
+                    navigation.navigate('Calendar');
+
+                }).catch(({message}) => {                 
+                    setDialogDelete({
+                        show : true,
+                        message : message
+                    });
+                })
+    }
 
     return (
         <View style={styles.container}>
@@ -27,7 +51,6 @@ export default function EditCalendarScreen({ route, navigation}) {
                         error={titleError != ""}
                         value={title}
                         onChangeText={(value) => setTitle(value)}
-                        //placeholder={Strings.evEventTitle}
                     />
                     <HelperText type="error" visible={titleError != ""}>
                         {titleError}
@@ -42,7 +65,6 @@ export default function EditCalendarScreen({ route, navigation}) {
                         onChangeText={(value) => setDesc(value)}
                         multiline={true}
                         numberOfLines={4}
-                        //placeholder={Strings.evEventTitle}
                     />
                 </View>
 
@@ -59,33 +81,50 @@ export default function EditCalendarScreen({ route, navigation}) {
                 >
                     {Strings.genCancel}
                 </Button>
+                <View>
+                    <Button
+                        mode="contained"
+                        onPress={() => {
+                            if (title == "") {
+                                setTitleError(Strings.calNoTitle);
+                                return;
+                            }
 
-                <Button
-                    mode="contained"
-                    onPress={() => {
-                        if (title == "") {
-                            setTitleError(Strings.calNoTitle);
-                            return;
-                        }
-
-                        firebase
-                            .firestore()
-                            .collection("calendars")
-                            .doc(calendar.id)
-                            .set({
-                                title: title,
-                                desc: desc,
-                                roles: calendar.roles,
-                            })
-                            .then(() => {
-                                navigation.goBack();
-                            })
-                            
-                    }}
-                >
-                    {Strings.calEditCal}
-                </Button>
+                            firebase
+                                .firestore()
+                                .collection("calendars")
+                                .doc(calendar.id)
+                                .set({
+                                    title: title,
+                                    desc: desc,
+                                    roles: calendar.roles,
+                                })
+                                .then(() => {
+                                    navigation.goBack();
+                                })
+                                
+                        }}
+                    >
+                           {Strings.genSave}
+                    </Button>
+                    <Button
+                        mode="contained"
+                        style={{marginTop : 10}}
+                        onPress={() => setDialogDelete({show : true, message : Strings.isDelete})}>
+                        {Strings.calDel}
+                    </Button>
+                </View>                   
             </View>
+            <Dialog visible={dialogDelete.show} onDismiss={() => this.currentId = null}>
+                    <Dialog.Title>{Strings.warning}</Dialog.Title>
+                    <Dialog.Content>
+                        <Paragraph>{dialogDelete.message}</Paragraph>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button onPress={() => setDialogDelete({...dialogDelete, show : false})}>Cancelar</Button>
+                        <Button onPress={() => onDelete()}>{Strings.genYes}</Button>
+                    </Dialog.Actions>
+                </Dialog>
         </View>
     );
 }

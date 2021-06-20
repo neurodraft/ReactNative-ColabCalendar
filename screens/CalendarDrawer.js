@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { Divider } from "react-native-elements";
-
+import styles from "../styles/global";
 import {
     DrawerContentScrollView,
     DrawerItemList,
@@ -15,6 +15,7 @@ import { Text, View, TouchableHighlight } from "react-native";
 import { Button, Title } from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
+import strings from "../constants/strings";
 
 const Drawer = createDrawerNavigator();
 
@@ -75,6 +76,7 @@ class CalendarDrawer extends Component {
     }
 
     render() {
+        console.log(this.state.calendars)
         if (this.state.calendars.length > 0) {
             var calendarScreens = [];
             calendarScreens = this.state.calendars.map((calendar, index) => {
@@ -127,7 +129,11 @@ class CalendarDrawer extends Component {
                 </Drawer.Navigator>
             );
         }
-        return <View></View>;
+        return (
+            <View style={styles.container}>
+                <Button onPress={() => this.newCalendarScreen()}>{strings.calNewCalendar}</Button>
+            </View>
+        );
     }
 }
 
