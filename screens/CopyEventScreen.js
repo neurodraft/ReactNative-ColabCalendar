@@ -14,7 +14,7 @@ import formStyles from "../styles/form";
 import Strings from "../constants/strings";
 import firebase from "../firebase";
 
-export default function EditEventScreen({ route, navigation }) {
+export default function CopyEventScreen({ route, navigation }) {
 
     const { day, calendar, event } = route.params;
 
@@ -33,32 +33,8 @@ export default function EditEventScreen({ route, navigation }) {
 
     const [desc, setDesc] = useState(event.desc);
 
-    const onEditEvent = () => {
 
-        firebase
-        .firestore()
-        .collection("calendars")
-        .doc(calendar.id)
-            .collection("events")
-            .doc(event.id)
-            .set({
-                date, title, desc
-            }).then(ok => {
-
-                setSnackbar({
-                    visible : !0,
-                    message : Strings.edited
-                })
-                navigation.navigate("Day's Events", {
-                    day: day,
-                    calendar:calendar,
-                })
-            })
-            .catch(({message}) =>  setSnackbar({
-                visible : !0,
-                message : message
-            }))
-    }
+        
 
     return (
         <View style={styles.container}>
@@ -107,7 +83,6 @@ export default function EditEventScreen({ route, navigation }) {
                         Set Time
                     </Button>
                 </View>
-
             </ScrollView>
 
             <View style={formStyles.formButtons}>
@@ -132,25 +107,11 @@ export default function EditEventScreen({ route, navigation }) {
                             setTitleError(Strings.evNoTitle);
                             return;
                         }
-
-                        onEditEvent()
                     }}
                 >
-                    {Strings.evEditEvent}
+                    {Strings.genYes}
                 </Button>
-                
             </View>
-
-            {Platform.OS !== "web" && datePickerVisible && (
-                <DateTimePicker
-                    value={date}
-                    mode="time"
-                    onChange={(event, selectedDate) => {
-                        setDatePickerVisible(false);
-                        setDate(selectedDate || date);
-                    }}
-                />
-            )}
             <Snackbar
                 visible={snackbar.visible}
                 onDismiss={() => setSnackbar({ visible: false, message: "" })}
