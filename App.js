@@ -89,10 +89,11 @@ export default function App() {
         .firestore()
         .collection("invites")
         .where('receiverID', '==', firebase.auth().currentUser.uid)
+        .where('situation', '==', 'sent')
         .onSnapshot((querySnapshot) => {
            let n = 0;
 
-           querySnapshot.forEach(a => a.data().situation == 'sent' ? n++ : null);
+           querySnapshot.forEach(a => n++);
             
            setNumInvites(n);
            console.log(numInvites)
