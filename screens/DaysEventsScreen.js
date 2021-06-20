@@ -27,7 +27,7 @@ export default class DaysEventsScreen extends Component {
     }
 
     componentDidMount() {
-
+        
         const day   = new Date(this.props.route.params.day),
               start = new Date(day.getFullYear(), day.getMonth(), day.getDate()),
               end   = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 23, 59, 59);

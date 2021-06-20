@@ -31,7 +31,7 @@ export default function EditEventScreen({ route, navigation }) {
 
     const [datePickerVisible, setDatePickerVisible] = useState(false);
 
-    const [desc, setDesc] = useState(event.desc);
+    const [desc, setDesc] = useState(event.desc ? event.desc : '');
 
     const onEditEvent = () => {
 

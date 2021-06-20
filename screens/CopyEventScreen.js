@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, Platform, ScrollView } from "react-native";
 import {
     Title,
     TextInput,
     HelperText,
     Button,
-    Snackbar
+    Snackbar,
+    List,
+    Switch,
+    RadioButton
 } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -31,10 +34,59 @@ export default function CopyEventScreen({ route, navigation }) {
 
     const [datePickerVisible, setDatePickerVisible] = useState(false);
 
-    const [desc, setDesc] = useState(event.desc);
+    const [desc, setDesc] = useState(event.desc ? event.desc : '');
 
+    const [calendars, setCalendars] = useState([]);
 
-        
+    const [calendarId, setCalendarId] = useState(null)
+
+    useEffect(() => {
+        firebase
+        .firestore()
+        .collection("calendars")
+        .where(`roles.${firebase.auth().currentUser.uid}`, "in", [
+            "owner",
+            "collaborator"
+        ]).get()
+        .then(querySnapshot => {
+
+            const c = [];
+            querySnapshot.forEach(q => {
+                const data = q.data();
+               if(q.id != calendar.id)c.push({...q.data(), id : q.id, selected : false})
+            })
+
+            setCalendars(c);
+        })
+    }, [])
+
+    const onClone = () => {
+
+      if(!calendarId){
+        setSnackbar({ visible: true, message: "Selecione um calendario" });
+        return;
+      }
+
+      firebase
+      .firestore()
+      .collection("calendars")
+      .doc(calendarId)
+      .collection('events')
+      .add({
+          title, 
+          desc, 
+          date
+      })
+      .then(cloned => {
+            navigation.navigate("Day's Events", {
+                day: day,
+                calendar:calendar,
+            })
+      }).catch(({message}) => {
+
+        setSnackbar({ visible: true, message: message });
+      })
+    }
 
     return (
         <View style={styles.container}>
@@ -83,6 +135,20 @@ export default function CopyEventScreen({ route, navigation }) {
                         Set Time
                     </Button>
                 </View>
+                <View>     
+                    <Title>Selecione um calendario para copiar</Title>               
+                    <RadioButton.Group onValueChange={newValue => setCalendarId(newValue)} value={calendarId}>
+                        {calendars.map((c, i) => {                       
+                            return (
+                                <View key={i}>
+                                    <Text>{c.title}</Text>
+                                    <RadioButton value={c.id} />
+                                </View>
+                            )
+                        })}                   
+                    </RadioButton.Group>
+                  
+                </View>
             </ScrollView>
 
             <View style={formStyles.formButtons}>
@@ -107,9 +173,10 @@ export default function CopyEventScreen({ route, navigation }) {
                             setTitleError(Strings.evNoTitle);
                             return;
                         }
+                        onClone()
                     }}
                 >
-                    {Strings.genYes}
+                    Clonar
                 </Button>
             </View>
             <Snackbar
