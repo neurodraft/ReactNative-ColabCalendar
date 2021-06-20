@@ -20,13 +20,13 @@ export default function SignupScreen({ navigation }) {
 
         if([email, password, verifyPassword].some(input => !input))return setSnackbar({
             visible: true,
-            message: "Campos em branco",
+            message: Strings.suEmptyFields,
         });
 
         if(password != verifyPassword) {
             return setSnackbar({
                 visible: true,
-                message: "A confirmação da senha não corresponde",
+                message: Strings.suPasswordsNoMatch,
             });
         }
 

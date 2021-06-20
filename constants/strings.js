@@ -41,6 +41,10 @@ export default new LocalizedStrings({
         logLogOut: 'Logout',
         logLogOutButton: 'Log Out',
 
+        // Sign Up Screen Error Messages
+        suEmptyFields: 'Fields cannot be left blank',
+        suPasswordsNoMatch: 'Passwords do not match',
+
         // Settings
         setSettingsScreen: 'Settings Screen',
 
@@ -171,6 +175,10 @@ export default new LocalizedStrings({
         logSignUp: 'Registar',
         logLogOut: 'Sair',
         logLogOutButton: 'Sair',
+
+        // Sign Up Screen Error Messages
+        suEmptyFields: 'Campos em branco',
+        suPasswordsNoMatch: 'A confirmação da senha não corresponde',
 
         // Settings
         setSettingsScreen: 'Menu de opções',

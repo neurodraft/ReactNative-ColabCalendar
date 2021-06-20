@@ -60,7 +60,7 @@ export default function LoginScreen({navigation}){
                 visible={snackbar.visible}
                 onDismiss={() => setSnackbar({ visible: false, message: "" })}
                 action={{
-                    label: "Close",
+                    label: Strings.genClose,
                     onPress: () => {
                         // Do something
                     },
