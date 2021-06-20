@@ -6,6 +6,7 @@ import {
     Button,
     RadioButton,
     List,
+    IconButton,
 } from "react-native-paper";
 
 import styles from "../styles/global";
@@ -39,6 +40,7 @@ export default function ShareCalendarScreen({ route, navigation }) {
         Promise.all(promises).then((result) => {
             result.forEach((userDoc) => {
                 newRoles.push({
+                    uid: userDoc.data().id,
                     email: userDoc.data().email,
                     role: calendar.roles[userDoc.data().id],
                 });
@@ -47,6 +49,10 @@ export default function ShareCalendarScreen({ route, navigation }) {
             setExistingRoles(newRoles);
         });
     }, []);
+
+    const getMyPermission = () => {
+        return calendar.roles[firebase.auth().currentUser.uid];
+    };
 
     const listItems = () => {
         console.log(existingRoles);
@@ -57,6 +63,34 @@ export default function ShareCalendarScreen({ route, navigation }) {
                     title={member.email}
                     description={member.role}
                     left={(props) => <List.Icon {...props} icon="account" />}
+                    right={(props) =>
+                        member.role != "owner" &&
+                        getMyPermission() == "owner" && (
+                            <IconButton
+                                icon="delete"
+                                size="24"
+                                onPress={() => {
+                                    console.log(member.uid);
+                                    firebase
+                                        .firestore()
+                                        .collection("calendars")
+                                        .doc(calendar.id)
+                                        .set(
+                                            {
+                                                roles: {
+                                                    [member.uid]: firebase.firestore.FieldValue.delete(),
+                                                },
+                                            },
+                                            { merge: true }
+                                        )
+                                        .catch((error) => {
+                                            console.log(error);
+                                        });
+                                }}
+                            />
+                        )
+                    }
+                    key={index}
                 />
             );
         });
@@ -66,7 +100,8 @@ export default function ShareCalendarScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <ScrollView style={formStyles.formContainer}>
+            
+            <View style={formStyles.formContainer}>
                 <View style={formStyles.formElement}>
                     <TextInput
                         mode="outlined"
@@ -84,7 +119,8 @@ export default function ShareCalendarScreen({ route, navigation }) {
                 <View
                     style={{
                         marginTop: 20,
-                        width: "60%",
+                        width: "100%",
+                        justifyContent: "center"
                     }}
                 >
                     <RadioButton.Group
@@ -95,9 +131,10 @@ export default function ShareCalendarScreen({ route, navigation }) {
                             style={{
                                 flexDirection: "row",
                                 justifyContent: "space-between",
+                                alignItems: "center"
                             }}
                         >
-                            <Text style={{ textAlignVertical: "center" }}>
+                            <Text>
                                 Collaborator
                             </Text>
                             <RadioButton value={"collaborator"} />
@@ -106,20 +143,17 @@ export default function ShareCalendarScreen({ route, navigation }) {
                             style={{
                                 flexDirection: "row",
                                 justifyContent: "space-between",
+                                alignItems: "center"
                             }}
                         >
-                            <Text style={{ textAlignVertical: "center" }}>
+                            <Text >
                                 Viewer
                             </Text>
                             <RadioButton value={"viewer"} />
                         </View>
                     </RadioButton.Group>
                 </View>
-
-                <List.Section>{listItems()}</List.Section>
-            </ScrollView>
-
-            <View style={formStyles.formButtons}>
+                <View style={formStyles.formButtons}>
                 <Button
                     mode="contained"
                     color="grey"
@@ -138,6 +172,13 @@ export default function ShareCalendarScreen({ route, navigation }) {
                             setEmailError("This field cannot be empty.");
                             return;
                         }
+
+                        existingRoles.forEach((member) => {
+                            if (email == member.email) {
+                                setEmailError("This account is already added.");
+                                return;
+                            }
+                        });
 
                         firebase
                             .firestore()
@@ -179,6 +220,12 @@ export default function ShareCalendarScreen({ route, navigation }) {
                     {"Send Invite"}
                 </Button>
             </View>
+            </View>
+
+            
+            <ScrollView style={formStyles.formContainer}>
+                <List.Section>{listItems()}</List.Section>
+            </ScrollView>
         </View>
     );
 }

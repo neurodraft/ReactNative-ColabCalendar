@@ -4,6 +4,8 @@ import styles from "../styles/global";
 import firebase from "../firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+import {Badge} from "react-native-paper";
+
 class MyCalendar extends Component {
     weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -61,6 +63,27 @@ class MyCalendar extends Component {
         }
 
         return false;
+    }
+
+    numberOfEvents(day) {
+        var checking = new Date(this.props.selectedDate().getTime());
+        checking.setDate(day);
+
+        var count= 0;
+
+        for (var i = 0; i < this.state.events.length; i++) {
+            var event = this.state.events[i];
+            var date = event["date"].toDate();
+            if (
+                checking.getFullYear() === date.getFullYear() &&
+                checking.getMonth() === date.getMonth() &&
+                checking.getDate() === date.getDate()
+            ) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     generateMatrix(today) {
@@ -122,6 +145,7 @@ class MyCalendar extends Component {
         var rows = [];
         rows = this.state.matrix.map((row, rowIndex) => {
             var rowItems = row.map((item, colIndex) => {
+                var numberOfEvents = this.numberOfEvents(item);
                 return (
                     <TouchableHighlight
                         style={{
@@ -159,12 +183,10 @@ class MyCalendar extends Component {
                             >
                                 {item != -1 ? item : ""}
                             </Text>
-                            {item != 1 && this.areThereEvents(item) && (
-                                <Ionicons
-                                    color="tomato"
-                                    name="ellipse"
-                                    size={8}
-                                />
+                            {item != 1 && (numberOfEvents > 0) && (
+                                <Badge
+                                    style={{backgroundColor: "tomato", color: "white"}}
+                                >{numberOfEvents}</Badge>
                             )}
                         </View>
                     </TouchableHighlight>

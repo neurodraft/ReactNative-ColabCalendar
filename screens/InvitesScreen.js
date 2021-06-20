@@ -3,6 +3,8 @@ import { View, Text, ScrollView } from "react-native";
 import { List, Button } from "react-native-paper";
 import firebase from "../firebase";
 
+import styles from "../styles/global";
+
 export default class InvitesScreen extends Component {
     unsubscribeListener;
 
@@ -45,6 +47,7 @@ export default class InvitesScreen extends Component {
         items = this.state.invites.map((invite, index) => {
             return (
                 <List.Item
+                    key={index}
                     title={invite.calendarTitle}
                     description={`You were invited to be a ${invite.role} in this calendar.`}
                     left={(props) => (
@@ -68,17 +71,18 @@ export default class InvitesScreen extends Component {
                                                 .firestore()
                                                 .collection("invites")
                                                 .doc(invite.id)
-                                                .delete();
-                                            then(() => {
-                                                console.log(
-                                                    "Document successfully deleted!"
-                                                );
-                                            }).catch((error) => {
-                                                console.error(
-                                                    "Error removing document: ",
-                                                    error
-                                                );
-                                            });
+                                                .delete()
+                                                .then(() => {
+                                                    console.log(
+                                                        "Document successfully deleted!"
+                                                    );
+                                                })
+                                                .catch((error) => {
+                                                    console.error(
+                                                        "Error removing document: ",
+                                                        error
+                                                    );
+                                                });
                                         });
                                 }}
                             >
@@ -90,8 +94,8 @@ export default class InvitesScreen extends Component {
                                         .firestore()
                                         .collection("invites")
                                         .doc(invite.id)
-                                        .delete();
-                                    then(() => {
+                                        .delete()
+                                        .then(() => {
                                         console.log(
                                             "Document successfully deleted!"
                                         );
@@ -112,12 +116,7 @@ export default class InvitesScreen extends Component {
         });
 
         return (
-            <View
-                style={{
-                    backgroundColor: "#fff",
-                    flex: 1,
-                }}
-            >
+            <View style={styles.container}>
                 <ScrollView>
                     <List.Section>{items}</List.Section>
                 </ScrollView>

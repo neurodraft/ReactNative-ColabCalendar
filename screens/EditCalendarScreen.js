@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Text, View, ScrollView } from "react-native";
-import { TextInput, HelperText, Button, Paragraph, Dialog } from "react-native-paper";
+import {
+    TextInput,
+    HelperText,
+    Button,
+    Paragraph,
+    Dialog,
+} from "react-native-paper";
 
 import styles from "../styles/global";
 import formStyles from "../styles/form";
@@ -8,41 +14,41 @@ import formStyles from "../styles/form";
 import Strings from "../constants/strings";
 import firebase from "../firebase";
 
-export default function EditCalendarScreen({ route, navigation}) {
-
-    const {calendar} = route.params;
+export default function EditCalendarScreen({ route, navigation }) {
+    const { calendar } = route.params;
 
     const [title, setTitle] = useState(calendar.title);
     const [titleError, setTitleError] = useState("");
     const [desc, setDesc] = useState(calendar.desc);
-    const [dialogDelete, setDialogDelete] = useState({ show: false, message: "" })
+    const [dialogDelete, setDialogDelete] = useState({
+        show: false,
+        message: "",
+    });
 
     const onDelete = () => {
-
         firebase
             .firestore()
             .collection("calendars")
-            .doc(calendar.id)               
-                .delete()
-                .then(deleted => {
-                    setDialogDelete({
-                        show : true,
-                        message : Strings.deleted,
-                    });
+            .doc(calendar.id)
+            .delete()
+            .then((deleted) => {
+                setDialogDelete({
+                    show: true,
+                    message: Strings.deleted,
+                });
 
-                    navigation.navigate('Calendar');
-
-                }).catch(({message}) => {                 
-                    setDialogDelete({
-                        show : true,
-                        message : message
-                    });
-                })
-    }
+                navigation.navigate("Calendar");
+            })
+            .catch(({ message }) => {
+                setDialogDelete({
+                    show: true,
+                    message: message,
+                });
+            });
+    };
 
     return (
         <View style={styles.container}>
-
             <ScrollView style={formStyles.formContainer}>
                 <View style={formStyles.formElement}>
                     <TextInput
@@ -67,7 +73,6 @@ export default function EditCalendarScreen({ route, navigation}) {
                         numberOfLines={4}
                     />
                 </View>
-
             </ScrollView>
 
             <View style={formStyles.formButtons}>
@@ -101,31 +106,44 @@ export default function EditCalendarScreen({ route, navigation}) {
                                 })
                                 .then(() => {
                                     navigation.goBack();
-                                })
-                                
+                                });
                         }}
                     >
-                           {Strings.genSave}
+                        {Strings.genSave}
                     </Button>
                     <Button
                         mode="contained"
-                        style={{marginTop : 10}}
-                        onPress={() => setDialogDelete({show : true, message : Strings.isDelete})}>
-                        {Strings.calDel}
+                        style={{ marginTop: 10 }}
+                        onPress={() =>
+                            setDialogDelete({
+                                show: true,
+                                message: Strings.isDelete,
+                            })
+                        }
+                    >
+                        {Strings.genRemove}
                     </Button>
-                </View>                   
+                </View>
             </View>
-            <Dialog visible={dialogDelete.show} onDismiss={() => this.currentId = null}>
-                    <Dialog.Title>{Strings.warning}</Dialog.Title>
-                    <Dialog.Content>
-                        <Paragraph>{dialogDelete.message}</Paragraph>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={() => setDialogDelete({...dialogDelete, show : false})}>Cancelar</Button>
-                        <Button onPress={() => onDelete()}>{Strings.genYes}</Button>
-                    </Dialog.Actions>
-                </Dialog>
+            <Dialog
+                visible={dialogDelete.show}
+                onDismiss={() => setDialogDelete({ ...dialogDelete, show: false })}
+            >
+                <Dialog.Title>{Strings.warning}</Dialog.Title>
+                <Dialog.Content>
+                    <Paragraph>{dialogDelete.message}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button
+                        onPress={() =>
+                            setDialogDelete({ ...dialogDelete, show: false })
+                        }
+                    >
+                        {Strings.genNo}
+                    </Button>
+                    <Button onPress={() => onDelete()}>{Strings.genYes}</Button>
+                </Dialog.Actions>
+            </Dialog>
         </View>
     );
 }
-
