@@ -31,7 +31,7 @@ class MyCalendar extends Component {
                     // doc.data() is never undefined for query doc snapshots
                     console.log(doc.id, " => ", doc.data());
                     this.setState({
-                        ...this.state.matrix,
+                        ...this.state,
                         events: [...this.state.events, doc.data()],
                     });
                 });

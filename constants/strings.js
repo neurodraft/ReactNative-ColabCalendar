@@ -55,6 +55,7 @@ export default new LocalizedStrings({
          calCalendarDesc: 'Calendar Description',
          calCreateCal: 'Create Calendar',
          calNoTitle: 'The calendar must have a title.',
+         calEditCal: 'Edit Calendar',
 
         
 
