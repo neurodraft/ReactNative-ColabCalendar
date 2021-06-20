@@ -11,10 +11,11 @@ import {
 
 import firebase from "../firebase";
 import CalendarEventNavigator from "./CalendarEventNavigator";
-import { Text, View, TouchableHighlight } from "react-native";
+import { Text, View, TouchableHighlight, Modal } from "react-native";
 import { Button, Title } from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
+import styles from "../styles/global";
 
 const Drawer = createDrawerNavigator();
 
@@ -25,6 +26,7 @@ class CalendarDrawer extends Component {
         super(props);
         this.state = {
             calendars: [],
+            shareVisible: false,
         };
     }
 
@@ -76,6 +78,13 @@ class CalendarDrawer extends Component {
         this.props.navigation.navigate("New Calendar");
     }
 
+    setShareVisible(value) {
+        this.setState({
+            ...this.state,
+            shareVisible: value,
+        });
+    }
+
     render() {
         if (this.state.calendars.length > 0) {
             var calendarScreens = [];
@@ -91,21 +100,38 @@ class CalendarDrawer extends Component {
                             headerStyle: { backgroundColor: "tomato" },
                             headerTintColor: "white",
                             headerRight: () => (
-                                <TouchableHighlight
-                                    style={{ marginRight: 10 }}
-                                    onPress={() => {
-                                        this.props.navigation.navigate(
-                                            "Edit Calendar",
-                                            { calendar: calendar }
-                                        );
-                                    }}
-                                >
-                                    <Ionicons
-                                        color="white"
-                                        name="create-outline"
-                                        size={24}
-                                    />
-                                </TouchableHighlight>
+                                <View style={{ flexDirection: "row" }}>
+                                    <TouchableHighlight
+                                        style={{ marginRight: 10 }}
+                                        onPress={() => {
+                                            this.props.navigation.navigate(
+                                                "Share Calendar",
+                                                { calendar: calendar }
+                                            );
+                                        }}
+                                    >
+                                        <Ionicons
+                                            color="white"
+                                            name="share-outline"
+                                            size={24}
+                                        />
+                                    </TouchableHighlight>
+                                    <TouchableHighlight
+                                        style={{ marginRight: 10 }}
+                                        onPress={() => {
+                                            this.props.navigation.navigate(
+                                                "Edit Calendar",
+                                                { calendar: calendar }
+                                            );
+                                        }}
+                                    >
+                                        <Ionicons
+                                            color="white"
+                                            name="create-outline"
+                                            size={24}
+                                        />
+                                    </TouchableHighlight>
+                                </View>
                             ),
                         }}
                         key={index}
@@ -129,7 +155,19 @@ class CalendarDrawer extends Component {
                 </Drawer.Navigator>
             );
         }
-        return <View></View>;
+        return (
+            <View style={styles.container}>
+                <Text>No calendars found...</Text>
+                <Button
+                    mode="contained"
+                    onPress={() => {
+                        props.newCalendar();
+                    }}
+                >
+                    New Calendar
+                </Button>
+            </View>
+        );
     }
 }
 

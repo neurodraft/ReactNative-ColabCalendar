@@ -5,6 +5,8 @@ import CalendarDrawer from "./CalendarDrawer";
 import NewCalendarScreen from "./NewCalendarScreen";
 
 import EditCalendarScreen from "./EditCalendarScreen";
+import ShareCalendarScreen from "./ShareCalendarScreen";
+
 
 const Stack = createStackNavigator();
 
@@ -23,6 +25,10 @@ export default function CalendarStack() {
             <Stack.Screen
                 name="Edit Calendar"
                 component={EditCalendarScreen}
+            />
+            <Stack.Screen
+                name="Share Calendar"
+                component={ShareCalendarScreen}
             />
         </Stack.Navigator>
     );

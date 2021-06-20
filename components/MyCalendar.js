@@ -16,30 +16,31 @@ class MyCalendar extends Component {
             matrix: this.generateMatrix(props.selectedDate()),
             events: [],
         };
-
-        
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.unsubscribeListener = firebase
             .firestore()
             .collection("calendars")
             .doc(this.props.calendar.id)
             .collection("events")
             .onSnapshot((querySnapshot) => {
+                var newEvents = [];
                 querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
                     console.log(doc.id, " => ", doc.data());
-                    this.setState({
-                        ...this.state,
-                        events: [...this.state.events, doc.data()],
-                    });
+                    newEvents = [...newEvents, doc.data()];
+                });
+
+                this.setState({
+                    ...this.state,
+                    events: newEvents,
                 });
             });
     }
 
-    componentWillUnmount(){
-        if(!!this.unsubscribeListener){
+    componentWillUnmount() {
+        if (!!this.unsubscribeListener) {
             this.unsubscribeListener();
         }
     }
@@ -77,7 +78,7 @@ class MyCalendar extends Component {
         var firstDay = date.getDay();
 
         // Get number of days in month
-        const maxDays = new Date(year, month+1, 0).getDate();
+        const maxDays = new Date(year, month + 1, 0).getDate();
 
         // Populate matrix
         var counter = 1;
