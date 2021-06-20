@@ -27,27 +27,34 @@ export default function ShareCalendarScreen({ route, navigation }) {
 
     console.log(calendar.roles);
 
-    useEffect(() => {
+    const updateRoles = () => {
         var promises = [];
-        Object.keys(calendar.roles).forEach((uid) => {
-            promises.push(
-                firebase.firestore().collection("users").doc(uid).get()
-            );
-        });
-
-        var newRoles = [];
-
-        Promise.all(promises).then((result) => {
-            result.forEach((userDoc) => {
-                newRoles.push({
-                    uid: userDoc.data().id,
-                    email: userDoc.data().email,
-                    role: calendar.roles[userDoc.data().id],
-                });
+        firebase.firestore().collection("calendars").doc(calendar.id).get().then((doc) => {
+            Object.keys(doc.data().roles).forEach((uid) => {
+                promises.push(
+                    firebase.firestore().collection("users").doc(uid).get()
+                );
             });
-            console.log("newRoles: ", newRoles);
-            setExistingRoles(newRoles);
-        });
+    
+            var newRoles = [];
+    
+            Promise.all(promises).then((result) => {
+                result.forEach((userDoc) => {
+                    newRoles.push({
+                        uid: userDoc.data().id,
+                        email: userDoc.data().email,
+                        role: calendar.roles[userDoc.data().id],
+                    });
+                });
+                console.log("newRoles: ", newRoles);
+                setExistingRoles(newRoles);
+            });
+        })
+        
+    };
+
+    useEffect(() => {
+        updateRoles();
     }, []);
 
     const getMyPermission = () => {
@@ -83,6 +90,7 @@ export default function ShareCalendarScreen({ route, navigation }) {
                                             },
                                             { merge: true }
                                         )
+                                        .then(updateRoles())
                                         .catch((error) => {
                                             console.log(error);
                                         });
@@ -100,7 +108,6 @@ export default function ShareCalendarScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            
             <View style={formStyles.formContainer}>
                 <View style={formStyles.formElement}>
                     <TextInput
@@ -120,7 +127,7 @@ export default function ShareCalendarScreen({ route, navigation }) {
                     style={{
                         marginTop: 20,
                         width: "100%",
-                        justifyContent: "center"
+                        justifyContent: "center",
                     }}
                 >
                     <RadioButton.Group
@@ -131,98 +138,95 @@ export default function ShareCalendarScreen({ route, navigation }) {
                             style={{
                                 flexDirection: "row",
                                 justifyContent: "space-between",
-                                alignItems: "center"
+                                alignItems: "center",
                             }}
                         >
-                            <Text>
-                                Collaborator
-                            </Text>
+                            <Text>Collaborator</Text>
                             <RadioButton value={"collaborator"} />
                         </View>
                         <View
                             style={{
                                 flexDirection: "row",
                                 justifyContent: "space-between",
-                                alignItems: "center"
+                                alignItems: "center",
                             }}
                         >
-                            <Text >
-                                Viewer
-                            </Text>
+                            <Text>Viewer</Text>
                             <RadioButton value={"viewer"} />
                         </View>
                     </RadioButton.Group>
                 </View>
                 <View style={formStyles.formButtons}>
-                <Button
-                    mode="contained"
-                    color="grey"
-                    labelStyle={{ color: "white" }}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                >
-                    {Strings.genCancel}
-                </Button>
+                    <Button
+                        mode="contained"
+                        color="grey"
+                        labelStyle={{ color: "white" }}
+                        onPress={() => {
+                            navigation.goBack();
+                        }}
+                    >
+                        {Strings.genCancel}
+                    </Button>
 
-                <Button
-                    mode="contained"
-                    onPress={() => {
-                        if (email == "") {
-                            setEmailError("This field cannot be empty.");
-                            return;
-                        }
-
-                        existingRoles.forEach((member) => {
-                            if (email == member.email) {
-                                setEmailError("This account is already added.");
+                    <Button
+                        mode="contained"
+                        onPress={() => {
+                            if (email == "") {
+                                setEmailError("This field cannot be empty.");
                                 return;
                             }
-                        });
 
-                        firebase
-                            .firestore()
-                            .collection("users")
-                            .where("email", "==", email)
-                            .get()
-                            .then((querySnapshot) => {
-                                if (!querySnapshot.empty) {
-                                    const reciever = querySnapshot.docs[0];
-                                    firebase
-                                        .firestore()
-                                        .collection("invites")
-                                        .add({
-                                            calendarID: calendar.id,
-                                            calendarTitle: calendar.title,
-                                            senderID: firebase.auth()
-                                                .currentUser.uid,
-                                            receiverID: reciever.id,
-                                            role: role,
-                                            situation: "sent",
-                                        })
-                                        .then(() => {
-                                            navigation.goBack();
-                                        })
-                                        .catch((error) =>
-                                            console.log(
-                                                `Error sending invite: ${error}`
-                                            )
-                                        );
-                                } else {
+                            existingRoles.forEach((member) => {
+                                if (email == member.email) {
                                     setEmailError(
-                                        "No user found with this email."
+                                        "This account is already added."
                                     );
                                     return;
                                 }
                             });
-                    }}
-                >
-                    {"Send Invite"}
-                </Button>
-            </View>
+
+                            firebase
+                                .firestore()
+                                .collection("users")
+                                .where("email", "==", email)
+                                .get()
+                                .then((querySnapshot) => {
+                                    if (!querySnapshot.empty) {
+                                        const reciever = querySnapshot.docs[0];
+                                        firebase
+                                            .firestore()
+                                            .collection("invites")
+                                            .add({
+                                                calendarID: calendar.id,
+                                                calendarTitle: calendar.title,
+                                                senderID: firebase.auth()
+                                                    .currentUser.uid,
+                                                receiverID: reciever.id,
+                                                role: role,
+                                                situation: "sent",
+                                            })
+                                            .then(() => {
+                                                navigation.goBack();
+                                            })
+                                            .catch((error) =>
+                                                console.log(
+                                                    `Error sending invite: ${error}`
+                                                )
+                                            );
+                                    } else {
+                                        setEmailError(
+                                            "No user found with this email."
+                                        );
+                                        return;
+                                    }
+                                });
+                        }}
+                    >
+                        {"Send Invite"}
+                    </Button>
+                </View>
             </View>
 
-            
             <ScrollView style={formStyles.formContainer}>
                 <List.Section>{listItems()}</List.Section>
             </ScrollView>
