@@ -6,6 +6,7 @@ import NewCalendarScreen from "./NewCalendarScreen";
 
 import EditCalendarScreen from "./EditCalendarScreen";
 import ShareCalendarScreen from "./ShareCalendarScreen";
+import CopyCalendarScreen from "./CopyCalendarScreen";
 
 
 const Stack = createStackNavigator();
@@ -29,6 +30,10 @@ export default function CalendarStack() {
             <Stack.Screen
                 name="Share Calendar"
                 component={ShareCalendarScreen}
+            />
+            <Stack.Screen
+                name="Copy Calendar"
+                component={CopyCalendarScreen}
             />
         </Stack.Navigator>
     );

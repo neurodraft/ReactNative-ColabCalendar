@@ -12,7 +12,7 @@ import {
 import firebase from "../firebase";
 import CalendarEventNavigator from "./CalendarEventNavigator";
 import { Text, View, TouchableHighlight, Modal } from "react-native";
-import { Button, Title } from "react-native-paper";
+import { Button, Title, Paragraph, Dialog } from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import strings from "../constants/strings";
@@ -24,9 +24,11 @@ class CalendarDrawer extends Component {
 
     constructor(props) {
         super(props);
+        console.log('props ', props)
         this.state = {
             calendars: [],
             shareVisible: false,
+            showDialogDelete : false,
         };
     }
 
@@ -89,6 +91,9 @@ class CalendarDrawer extends Component {
         if (this.state.calendars.length > 0) {
             var calendarScreens = [];
             calendarScreens = this.state.calendars.map((calendar, index) => {
+                const myPermission = calendar.roles[firebase.auth().currentUser.uid];
+
+            
                 return (
                     <Drawer.Screen
                         name={index + calendar.title}
@@ -100,38 +105,73 @@ class CalendarDrawer extends Component {
                             headerStyle: { backgroundColor: "tomato" },
                             headerTintColor: "white",
                             headerRight: () => (
-                                <View style={{ flexDirection: "row" }}>
-                                    <TouchableHighlight
-                                        style={{ marginRight: 10 }}
-                                        onPress={() => {
-                                            this.props.navigation.navigate(
-                                                "Share Calendar",
-                                                { calendar: calendar }
-                                            );
-                                        }}
-                                    >
-                                        <Ionicons
-                                            color="white"
-                                            name="share-outline"
-                                            size={24}
-                                        />
-                                    </TouchableHighlight>
-                                    <TouchableHighlight
-                                        style={{ marginRight: 10 }}
-                                        onPress={() => {
-                                            this.props.navigation.navigate(
-                                                "Edit Calendar",
-                                                { calendar: calendar }
-                                            );
-                                        }}
-                                    >
-                                        <Ionicons
-                                            color="white"
-                                            name="create-outline"
-                                            size={24}
-                                        />
-                                    </TouchableHighlight>
-                                </View>
+                                ['owner', 'collaborator'].some(c => c == myPermission)  ?
+                                    <View style={{ flexDirection: "row" }}>
+                                        <TouchableHighlight
+                                            style={{ marginRight: 10 }}
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    "Share Calendar",
+                                                    { calendar: calendar }
+                                                );
+                                            }}
+                                        >
+                                            <Ionicons
+                                                color="white"
+                                                name="share-outline"
+                                                size={24}
+                                            />
+                                        </TouchableHighlight>
+                                        <TouchableHighlight
+                                            style={{ marginRight: 10 }}
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    "Edit Calendar",
+                                                    { calendar: calendar }
+                                                );
+                                            }}
+                                        >
+                                            <Ionicons
+                                                color="white"
+                                                name="create-outline"
+                                                size={24}
+                                            />
+                                        </TouchableHighlight>
+                                        <TouchableHighlight
+                                            style={{ marginRight: 10 }}
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    "Copy Calendar",
+                                                    { calendar: calendar }
+                                                );
+                                            }}
+                                        >
+                                            <Ionicons
+                                                color="white"
+                                                name="copy"
+                                                size={24}
+                                            />
+                                        </TouchableHighlight>
+                                    </View>
+                                : (
+                                    <View style={{ flexDirection: "row" }}>
+                                        <TouchableHighlight
+                                            style={{ marginRight: 10 }}
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    "Copy Calendar",
+                                                    { calendar: calendar }
+                                                );
+                                            }}
+                                        >
+                                            <Ionicons
+                                                color="white"
+                                                name="copy"
+                                                size={24}
+                                            />
+                                        </TouchableHighlight>
+                                    </View>
+                                )
                             ),
                         }}
                         key={index}
@@ -139,11 +179,11 @@ class CalendarDrawer extends Component {
                 );
             });
 
-            return (
+            return (        
                 <Drawer.Navigator
-                    drawerContent={(props) => (
-                        <CustomDrawerContent
-                            {...props}
+                drawerContent={(props) => (
+                    <CustomDrawerContent
+                        {...props}
                             newCalendar={() => this.newCalendarScreen()}
                         />
                     )}
@@ -152,6 +192,7 @@ class CalendarDrawer extends Component {
                     }}
                 >
                     {calendarScreens}
+                    
                 </Drawer.Navigator>
             );
         }

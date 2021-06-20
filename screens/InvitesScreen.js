@@ -90,17 +90,17 @@ export default class InvitesScreen extends Component {
                                         .firestore()
                                         .collection("invites")
                                         .doc(invite.id)
-                                        .delete();
-                                    then(() => {
-                                        console.log(
-                                            "Document successfully deleted!"
-                                        );
-                                    }).catch((error) => {
-                                        console.error(
-                                            "Error removing document: ",
-                                            error
-                                        );
-                                    });
+                                        .delete()
+                                            then(() => {
+                                                console.log(
+                                                    "Document successfully deleted!"
+                                                );
+                                            }).catch((error) => {
+                                                console.error(
+                                                    "Error removing document: ",
+                                                    error
+                                                );
+                                            });
                                 }}
                             >
                                 Reject
