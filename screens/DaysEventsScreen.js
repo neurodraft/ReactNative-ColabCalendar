@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { View, Text, ScrollView} from "react-native";
 import { List, Button, IconButton, Paragraph, Dialog, Snackbar } from "react-native-paper";
 import firebase from "../firebase";
-
+import Strings from "../constants/strings";
 
 export default class DaysEventsScreen extends Component {
 
@@ -116,7 +116,7 @@ export default class DaysEventsScreen extends Component {
                 )
                 : (
                     <View style={{textAlign : 'center', paddingTop : 15, paddingBottom : 15}}>
-                        <Text>Nenhum resultado encontrado...</Text>
+                        <Text>{Strings.emptyResults}</Text>
                     </View>
                 )
         )
@@ -136,7 +136,7 @@ export default class DaysEventsScreen extends Component {
                         ...this.state,
                         snackbar : {
                             visible : true,
-                            message : 'Excluido com sucesso',
+                            message : Strings.deleted,
                         },
                         showDialogDelete : false
                     })
@@ -144,7 +144,7 @@ export default class DaysEventsScreen extends Component {
                     this.currentId = null;
 
                 }).catch(({message}) => {
-                    console.log(message)
+                 
                     this.setState({
                         ...this.state,
                         snackbar : {
@@ -183,19 +183,19 @@ export default class DaysEventsScreen extends Component {
                                             calendar: calendar,
                                         });
                                     }}
-                                >New Event</Button>                  
+                                >{Strings.evNewEvent}</Button>                  
                             </View>               
                         )
                         : ''
                 }               
                 <Dialog visible={this.state.showDialogDelete} onDismiss={() => this.currentId = null}>
-                    <Dialog.Title>Aviso</Dialog.Title>
+                    <Dialog.Title>{Strings.warning}</Dialog.Title>
                     <Dialog.Content>
-                        <Paragraph>Realemente deseja exclui-lo?</Paragraph>
+                        <Paragraph>{Strings.isDelete}</Paragraph>
                     </Dialog.Content>
                     <Dialog.Actions>
                         <Button onPress={() => this.setState({...this.state, showDialogDelete : false})}>Cancelar</Button>
-                        <Button onPress={() => this.onDeleteEvent()}>Ok</Button>
+                        <Button onPress={() => this.onDeleteEvent()}>{Strings.genYes}</Button>
                     </Dialog.Actions>
                 </Dialog>
                 <Snackbar

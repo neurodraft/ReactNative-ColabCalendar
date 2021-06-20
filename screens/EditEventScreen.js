@@ -14,8 +14,6 @@ import formStyles from "../styles/form";
 import Strings from "../constants/strings";
 import firebase from "../firebase";
 
-
-
 export default function EditEventScreen({ route, navigation }) {
 
     const { day, calendar, event } = route.params;
@@ -49,7 +47,7 @@ export default function EditEventScreen({ route, navigation }) {
 
                 setSnackbar({
                     visible : !0,
-                    message : 'Atualizado com sucesso'
+                    message : Strings.edited
                 })
                 navigation.navigate("Day's Events", {
                     day: day,
