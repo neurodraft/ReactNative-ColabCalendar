@@ -16,8 +16,6 @@ class MyCalendar extends Component {
             matrix: this.generateMatrix(props.selectedDate()),
             events: [],
         };
-
-        
     }
 
     componentDidMount(){

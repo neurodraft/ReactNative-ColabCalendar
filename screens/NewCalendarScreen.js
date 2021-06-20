@@ -13,6 +13,9 @@ export default function NewCalendarScreen({ route, navigation }) {
     const [titleError, setTitleError] = useState("");
     const [desc, setDesc] = useState("");
 
+
+    const currentUID = firebase.auth().currentUser.uid;
+
     return (
         <View style={styles.container}>
 
@@ -71,8 +74,9 @@ export default function NewCalendarScreen({ route, navigation }) {
                             .add({
                                 title: title,
                                 desc: desc,
+                                id_user : currentUID,
                                 roles: {
-                                    [firebase.auth().currentUser.uid]: "owner"
+                                    [currentUID]: "owner"
                                 },
                             })
                             .then((docRef) => {
