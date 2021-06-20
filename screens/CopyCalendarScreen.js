@@ -14,7 +14,7 @@ export default function CopyCalendarScreen({ route, navigation}) {
 
     const [title, setTitle] = useState(`Copy - ${calendar.title}`);
     const [titleError, setTitleError] = useState("");
-    const [desc, setDesc] = useState(calendar.desc);
+    const [desc, setDesc] = useState(calendar.desc ? calendar.desc : '');
     const [dialogDelete, setDialogDelete] = useState({ show: false, message: "" })
 
 

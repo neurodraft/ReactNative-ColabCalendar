@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, Platform, ScrollView } from "react-native";
 import {
     Title,
     TextInput,
     HelperText,
     Button,
-    Snackbar
+    Snackbar,
+    List,
+    Switch,
+    RadioButton
 } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -14,7 +17,7 @@ import formStyles from "../styles/form";
 import Strings from "../constants/strings";
 import firebase from "../firebase";
 
-export default function EditEventScreen({ route, navigation }) {
+export default function CopyEventScreen({ route, navigation }) {
 
     const { day, calendar, event } = route.params;
 
@@ -33,31 +36,56 @@ export default function EditEventScreen({ route, navigation }) {
 
     const [desc, setDesc] = useState(event.desc ? event.desc : '');
 
-    const onEditEvent = () => {
+    const [calendars, setCalendars] = useState([]);
 
+    const [calendarId, setCalendarId] = useState(null)
+
+    useEffect(() => {
         firebase
         .firestore()
         .collection("calendars")
-        .doc(calendar.id)
-            .collection("events")
-            .doc(event.id)
-            .set({
-                date, title, desc
-            }).then(ok => {
+        .where(`roles.${firebase.auth().currentUser.uid}`, "in", [
+            "owner",
+            "collaborator"
+        ]).get()
+        .then(querySnapshot => {
 
-                setSnackbar({
-                    visible : !0,
-                    message : Strings.edited
-                })
-                navigation.navigate("Day's Events", {
-                    day: day,
-                    calendar:calendar,
-                })
+            const c = [];
+            querySnapshot.forEach(q => {
+                const data = q.data();
+               if(q.id != calendar.id)c.push({...q.data(), id : q.id, selected : false})
             })
-            .catch(({message}) =>  setSnackbar({
-                visible : !0,
-                message : message
-            }))
+
+            setCalendars(c);
+        })
+    }, [])
+
+    const onClone = () => {
+
+      if(!calendarId){
+        setSnackbar({ visible: true, message: "Selecione um calendario" });
+        return;
+      }
+
+      firebase
+      .firestore()
+      .collection("calendars")
+      .doc(calendarId)
+      .collection('events')
+      .add({
+          title, 
+          desc, 
+          date
+      })
+      .then(cloned => {
+            navigation.navigate("Day's Events", {
+                day: day,
+                calendar:calendar,
+            })
+      }).catch(({message}) => {
+
+        setSnackbar({ visible: true, message: message });
+      })
     }
 
     return (
@@ -107,7 +135,20 @@ export default function EditEventScreen({ route, navigation }) {
                         Set Time
                     </Button>
                 </View>
-
+                <View>     
+                    <Title>Selecione um calendario para copiar</Title>               
+                    <RadioButton.Group onValueChange={newValue => setCalendarId(newValue)} value={calendarId}>
+                        {calendars.map((c, i) => {                       
+                            return (
+                                <View key={i}>
+                                    <Text>{c.title}</Text>
+                                    <RadioButton value={c.id} />
+                                </View>
+                            )
+                        })}                   
+                    </RadioButton.Group>
+                  
+                </View>
             </ScrollView>
 
             <View style={formStyles.formButtons}>
@@ -132,25 +173,12 @@ export default function EditEventScreen({ route, navigation }) {
                             setTitleError(Strings.evNoTitle);
                             return;
                         }
-
-                        onEditEvent()
+                        onClone()
                     }}
                 >
-                    {Strings.evEditEvent}
+                    Clonar
                 </Button>
-                
             </View>
-
-            {Platform.OS !== "web" && datePickerVisible && (
-                <DateTimePicker
-                    value={date}
-                    mode="time"
-                    onChange={(event, selectedDate) => {
-                        setDatePickerVisible(false);
-                        setDate(selectedDate || date);
-                    }}
-                />
-            )}
             <Snackbar
                 visible={snackbar.visible}
                 onDismiss={() => setSnackbar({ visible: false, message: "" })}

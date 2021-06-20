@@ -13,7 +13,7 @@ export default class DaysEventsScreen extends Component {
     constructor(props) {
         super(props);
 
-    
+      
         this.state = {
             events: [],
             showDialogDelete : false,
@@ -27,7 +27,7 @@ export default class DaysEventsScreen extends Component {
     }
 
     componentDidMount() {
-
+        
         const day   = new Date(this.props.route.params.day),
               start = new Date(day.getFullYear(), day.getMonth(), day.getDate()),
               end   = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 23, 59, 59);
@@ -82,7 +82,7 @@ export default class DaysEventsScreen extends Component {
                     key={index}
                     right={props => (
                         <View style={{flex: 1, flexDirection : 'row', alignItems : 'center'}}>
-                            <View style={{flex : 1, flexDirection : 'row'}}>
+                            <View style={{flex : 1, flexDirection : 'row', padding: '0 10'}}>
                                 { 
                                     ['owner', 'collaborator'].some(c => c == this.getMyPermission())  
                                         ? <IconButton icon="pencil" size={25} onPress={() => this.onEditEvent(event)}/> 
@@ -97,6 +97,11 @@ export default class DaysEventsScreen extends Component {
 
                                     : null
                                 }
+                                <IconButton icon="calendar-multiple" size="25" onPress={() => this.props.navigation.navigate("copy-event", {
+                                    calendar : this.props.route.params.calendar,
+                                    day : this.props.route.params.day,
+                                    event : event
+                                })}/>
                             </View>
                             <View>
                                 <Text {...props}>{`${date.getHours()}:${date.getMinutes()}`}</Text>
