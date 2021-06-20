@@ -11,7 +11,8 @@ import {
 
 import firebase from "../firebase";
 import CalendarEventNavigator from "./CalendarEventNavigator";
-import { View, Button, TouchableHighlight } from "react-native";
+import { Text, View, TouchableHighlight } from "react-native";
+import { Button, Title } from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -36,6 +37,7 @@ class CalendarDrawer extends Component {
                 "collaborator",
             ])
             .onSnapshot((querySnapshot) => {
+                this.clearCalendars();
                 querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
                     //console.log(doc.id, " => ", doc.data());
@@ -50,10 +52,17 @@ class CalendarDrawer extends Component {
             });
     }
 
-    componentWillUnmount(){
-        if(!!this.unsubscribeListener){
+    componentWillUnmount() {
+        if (!!this.unsubscribeListener) {
             this.unsubscribeListener();
         }
+    }
+
+    clearCalendars() {
+        this.setState({
+            ...this.state,
+            calendars: [],
+        });
     }
 
     addCalendar(calendar) {
@@ -73,10 +82,11 @@ class CalendarDrawer extends Component {
             calendarScreens = this.state.calendars.map((calendar, index) => {
                 return (
                     <Drawer.Screen
-                        name={calendar.title}
+                        name={index + calendar.title}
                         component={CalendarEventNavigator}
                         initialParams={{ calendar: calendar }}
                         options={{
+                            title: calendar.title,
                             headerShown: true,
                             headerStyle: { backgroundColor: "tomato" },
                             headerTintColor: "white",
@@ -139,12 +149,13 @@ function CustomDrawerContent(props) {
                 }}
             >
                 <Button
-                    style={{}}
-                    title="Create New"
+                    mode="contained"
                     onPress={() => {
                         props.newCalendar();
                     }}
-                />
+                >
+                    New Calendar
+                </Button>
             </View>
         </View>
     );
