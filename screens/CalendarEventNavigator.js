@@ -6,8 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import CalendarScreen from "./CalendarScreen";
 import DaysEventsScreen from "./DaysEventsScreen";
 import NewEventScreen from "./NewEventScreen";
-
-import firebase from "../firebase";
+import EditEventScreen from "./EditEventScreen";
 
 const Stack = createStackNavigator();
 
@@ -46,6 +45,11 @@ class CalendarEventNavigator extends Component {
                     name="New Event"
                     component={NewEventScreen}
                     options={{ title: "New Event" }}
+                />
+                 <Stack.Screen
+                    name="edit-event"
+                    component={EditEventScreen}
+                    options={{ title: "Edit Event" }}
                 />
             </Stack.Navigator>
         );

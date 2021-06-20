@@ -90,7 +90,7 @@ export default function NewEventScreen({ route, navigation }) {
                     }}
                 >
                     <Title>Remind me</Title>
-                    <Switch
+                    <Switch style={{marginTop : 8, marginLeft : 10}}
                         value={remindMe}
                         onValueChange={(value) => setRemindMe(value)}
                     />
@@ -161,7 +161,11 @@ export default function NewEventScreen({ route, navigation }) {
                     color="grey"
                     labelStyle={{ color: "white" }}
                     onPress={() => {
-                        navigation.goBack();
+                        navigation.navigate("Day's Events", {
+                            day: day,
+                            calendar:calendar,
+                            refresh : true,
+                        })
                     }}
                 >
                     {Strings.genCancel}
@@ -223,10 +227,19 @@ export default function NewEventScreen({ route, navigation }) {
                                             userId: firebase.auth().currentUser
                                                 .uid,
                                             identifier: identifier,
-                                        });
+                                        })
+                                        .then(ok => navigation.navigate("Day's Events", {
+                                            day: day,
+                                            calendar:calendar
+                                        }))
+                                }else {
+
+                                    navigation.navigate("Day's Events", {
+                                        day: day,
+                                        calendar:calendar
+                                    });
                                 }
 
-                                navigation.goBack();
                             })
                             .catch((error) => {
                                 console.error("Error adding document: ", error);

@@ -39,9 +39,7 @@ class CalendarDrawer extends Component {
             .onSnapshot((querySnapshot) => {
                 this.clearCalendars();
                 querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    //console.log(doc.id, " => ", doc.data());
-                    //console.dir(doc.data());
+                
                     var calendar = {
                         ...doc.data(),
                         id: doc.id,

@@ -42,6 +42,7 @@ export default new LocalizedStrings({
         // Events
         evEvents: 'Events',
         evNewEvent: 'New Event',
+        evEditEvent: 'Edit Event',
         evEventTitle: 'Event Title',
         evEventDesc: 'Event Description',
         evCreateEvent: 'Create Event',
@@ -142,6 +143,8 @@ export default new LocalizedStrings({
         utiYes: "Sim",
         utiNo: "Não",
         utiSearch: "Procura",
-        utiConfirm: "Confirmar"
+        utiConfirm: "Confirmar",
+
+        evEditEvent: 'Editar evento',
     },
 })
