@@ -6,6 +6,7 @@ import {
     Button,
     RadioButton,
     List,
+    IconButton,
 } from "react-native-paper";
 
 import styles from "../styles/global";
@@ -26,27 +27,39 @@ export default function ShareCalendarScreen({ route, navigation }) {
 
     console.log(calendar.roles);
 
-    useEffect(() => {
+    const updateRoles = () => {
         var promises = [];
-        Object.keys(calendar.roles).forEach((uid) => {
-            promises.push(
-                firebase.firestore().collection("users").doc(uid).get()
-            );
-        });
-
-        var newRoles = [];
-
-        Promise.all(promises).then((result) => {
-            result.forEach((userDoc) => {
-                newRoles.push({
-                    email: userDoc.data().email,
-                    role: calendar.roles[userDoc.data().id],
-                });
+        firebase.firestore().collection("calendars").doc(calendar.id).get().then((doc) => {
+            Object.keys(doc.data().roles).forEach((uid) => {
+                promises.push(
+                    firebase.firestore().collection("users").doc(uid).get()
+                );
             });
-            console.log("newRoles: ", newRoles);
-            setExistingRoles(newRoles);
-        });
+    
+            var newRoles = [];
+    
+            Promise.all(promises).then((result) => {
+                result.forEach((userDoc) => {
+                    newRoles.push({
+                        uid: userDoc.data().id,
+                        email: userDoc.data().email,
+                        role: calendar.roles[userDoc.data().id],
+                    });
+                });
+                console.log("newRoles: ", newRoles);
+                setExistingRoles(newRoles);
+            });
+        })
+        
+    };
+
+    useEffect(() => {
+        updateRoles();
     }, []);
+
+    const getMyPermission = () => {
+        return calendar.roles[firebase.auth().currentUser.uid];
+    };
 
     const listItems = () => {
         console.log(existingRoles);
@@ -57,6 +70,35 @@ export default function ShareCalendarScreen({ route, navigation }) {
                     title={member.email}
                     description={member.role}
                     left={(props) => <List.Icon {...props} icon="account" />}
+                    right={(props) =>
+                        member.role != "owner" &&
+                        getMyPermission() == "owner" && (
+                            <IconButton
+                                icon="delete"
+                                size="24"
+                                onPress={() => {
+                                    console.log(member.uid);
+                                    firebase
+                                        .firestore()
+                                        .collection("calendars")
+                                        .doc(calendar.id)
+                                        .set(
+                                            {
+                                                roles: {
+                                                    [member.uid]: firebase.firestore.FieldValue.delete(),
+                                                },
+                                            },
+                                            { merge: true }
+                                        )
+                                        .then(updateRoles())
+                                        .catch((error) => {
+                                            console.log(error);
+                                        });
+                                }}
+                            />
+                        )
+                    }
+                    key={index}
                 />
             );
         });
@@ -66,7 +108,7 @@ export default function ShareCalendarScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <ScrollView style={formStyles.formContainer}>
+            <View style={formStyles.formContainer}>
                 <View style={formStyles.formElement}>
                     <TextInput
                         mode="outlined"
@@ -84,7 +126,8 @@ export default function ShareCalendarScreen({ route, navigation }) {
                 <View
                     style={{
                         marginTop: 20,
-                        width: "60%",
+                        width: "100%",
+                        justifyContent: "center",
                     }}
                 >
                     <RadioButton.Group
@@ -95,90 +138,98 @@ export default function ShareCalendarScreen({ route, navigation }) {
                             style={{
                                 flexDirection: "row",
                                 justifyContent: "space-between",
+                                alignItems: "center",
                             }}
                         >
-                            <Text style={{ textAlignVertical: "center" }}>
-                                Collaborator
-                            </Text>
+                            <Text>Collaborator</Text>
                             <RadioButton value={"collaborator"} />
                         </View>
                         <View
                             style={{
                                 flexDirection: "row",
                                 justifyContent: "space-between",
+                                alignItems: "center",
                             }}
                         >
-                            <Text style={{ textAlignVertical: "center" }}>
-                                Viewer
-                            </Text>
+                            <Text>Viewer</Text>
                             <RadioButton value={"viewer"} />
                         </View>
                     </RadioButton.Group>
                 </View>
+                <View style={formStyles.formButtons}>
+                    <Button
+                        mode="contained"
+                        color="grey"
+                        labelStyle={{ color: "white" }}
+                        onPress={() => {
+                            navigation.goBack();
+                        }}
+                    >
+                        {Strings.genCancel}
+                    </Button>
 
-                <List.Section>{listItems()}</List.Section>
-            </ScrollView>
+                    <Button
+                        mode="contained"
+                        onPress={() => {
+                            if (email == "") {
+                                setEmailError("This field cannot be empty.");
+                                return;
+                            }
 
-            <View style={formStyles.formButtons}>
-                <Button
-                    mode="contained"
-                    color="grey"
-                    labelStyle={{ color: "white" }}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                >
-                    {Strings.genCancel}
-                </Button>
-
-                <Button
-                    mode="contained"
-                    onPress={() => {
-                        if (email == "") {
-                            setEmailError("This field cannot be empty.");
-                            return;
-                        }
-
-                        firebase
-                            .firestore()
-                            .collection("users")
-                            .where("email", "==", email)
-                            .get()
-                            .then((querySnapshot) => {
-                                if (!querySnapshot.empty) {
-                                    const reciever = querySnapshot.docs[0];
-                                    firebase
-                                        .firestore()
-                                        .collection("invites")
-                                        .add({
-                                            calendarID: calendar.id,
-                                            calendarTitle: calendar.title,
-                                            senderID: firebase.auth()
-                                                .currentUser.uid,
-                                            receiverID: reciever.id,
-                                            role: role,
-                                            situation: "sent",
-                                        })
-                                        .then(() => {
-                                            navigation.goBack();
-                                        })
-                                        .catch((error) =>
-                                            console.log(
-                                                `Error sending invite: ${error}`
-                                            )
-                                        );
-                                } else {
+                            existingRoles.forEach((member) => {
+                                if (email == member.email) {
                                     setEmailError(
-                                        "No user found with this email."
+                                        "This account is already added."
                                     );
                                     return;
                                 }
                             });
-                    }}
-                >
-                    {"Send Invite"}
-                </Button>
+
+                            firebase
+                                .firestore()
+                                .collection("users")
+                                .where("email", "==", email)
+                                .get()
+                                .then((querySnapshot) => {
+                                    if (!querySnapshot.empty) {
+                                        const reciever = querySnapshot.docs[0];
+                                        firebase
+                                            .firestore()
+                                            .collection("invites")
+                                            .add({
+                                                calendarID: calendar.id,
+                                                calendarTitle: calendar.title,
+                                                senderID: firebase.auth()
+                                                    .currentUser.uid,
+                                                receiverID: reciever.id,
+                                                role: role,
+                                                situation: "sent",
+                                            })
+                                            .then(() => {
+                                                navigation.goBack();
+                                            })
+                                            .catch((error) =>
+                                                console.log(
+                                                    `Error sending invite: ${error}`
+                                                )
+                                            );
+                                    } else {
+                                        setEmailError(
+                                            "No user found with this email."
+                                        );
+                                        return;
+                                    }
+                                });
+                        }}
+                    >
+                        {"Send Invite"}
+                    </Button>
+                </View>
             </View>
+
+            <ScrollView style={formStyles.formContainer}>
+                <List.Section>{listItems()}</List.Section>
+            </ScrollView>
         </View>
     );
 }

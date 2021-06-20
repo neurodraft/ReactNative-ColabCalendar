@@ -55,8 +55,8 @@ export default new LocalizedStrings({
 
         // Calendars
         calNewCalendar : 'New Calendar',
-        calendarTitle: 'Calendar Title',
-        calendarDesc: 'Calendar Description',
+        calCalendarTitle: 'Calendar Title',
+        calCalendarDesc: 'Calendar Description',
 
         // Errors
         errEmail: 'Invalid email',
