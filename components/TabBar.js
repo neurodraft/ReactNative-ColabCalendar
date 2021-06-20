@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
+import firebase from "../firebase";
 export default function TabBar({ state, descriptors, navigation }) {
     return (
       <View style={{ flexDirection: 'row' }}>

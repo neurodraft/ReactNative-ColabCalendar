@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef} from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import { Badge } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import SettingsScreen from "./screens/SettingsScreen.js";
@@ -34,6 +34,8 @@ Notifications.setNotificationHandler({
 export default function App() {
     const [user, setUser] = useState();
     const [isLoading, setIsLoading] = useState(true);
+
+    const [numInvites, setNumInvites] = useState(0);
 
     const [expoPushToken, setExpoPushToken] = useState("");
 
@@ -83,6 +85,21 @@ export default function App() {
         );
     }
 
+    firebase
+        .firestore()
+        .collection("invites")
+        .where('receiverID', '==', firebase.auth().currentUser.uid)
+        .where('situation', '==', 'sent')
+        .onSnapshot((querySnapshot) => {
+           let n = 0;
+
+           querySnapshot.forEach(a => n++);
+            
+           setNumInvites(n);
+           console.log(numInvites)
+        });
+        
+        
     return (
         <NavigationContainer>
             <Tab.Navigator
@@ -105,11 +122,17 @@ export default function App() {
 
                         // You can return any component that you like here!
                         return (
-                            <Ionicons
-                                name={iconName}
-                                size={size}
-                                color={color}
-                            />
+                            <Text>
+                                {
+                                  route.name === "Invites" && numInvites > 0 ?   <Badge style={{position:'absolute', top:-8, right : -10}}>{numInvites}</Badge> : ''  
+                                }
+                                <Ionicons
+                                    name={iconName}
+                                    size={size}
+                                    color={color}
+                                />
+                            </Text>
+                            
                         );
                     },
                 })}
