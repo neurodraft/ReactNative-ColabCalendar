@@ -15,7 +15,6 @@ import { Text, View, TouchableHighlight, Modal } from "react-native";
 import { Button, Title } from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
-import styles from "../styles/global";
 import strings from "../constants/strings";
 
 const Drawer = createDrawerNavigator();
@@ -38,6 +37,7 @@ class CalendarDrawer extends Component {
             .where(`roles.${firebase.auth().currentUser.uid}`, "in", [
                 "owner",
                 "collaborator",
+                "viewer"
             ])
             .onSnapshot((querySnapshot) => {
                 this.clearCalendars();

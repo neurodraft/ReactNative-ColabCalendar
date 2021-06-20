@@ -27,43 +27,44 @@ export default function ShareCalendarScreen({ route, navigation }) {
     console.log(calendar.roles);
 
     useEffect(() => {
+        var promises = [];
         Object.keys(calendar.roles).forEach((uid) => {
-            firebase
-                .firestore()
-                .collection("users")
-                .doc(uid)
-                .get()
-                .then((userDoc) => {
-                    setExistingRoles([
-                        ...existingRoles,
-                        {
-                            email: userDoc.data().email,
-                            role: calendar.roles[uid],
-                        },
-                    ]);
+            promises.push(
+                firebase.firestore().collection("users").doc(uid).get()
+            );
+        });
+
+        var newRoles = [];
+
+        Promise.all(promises).then((result) => {
+            result.forEach((userDoc) => {
+                newRoles.push({
+                    email: userDoc.data().email,
+                    role: calendar.roles[userDoc.data().id],
                 });
+            });
+            console.log("newRoles: ", newRoles);
+            setExistingRoles(newRoles);
         });
     }, []);
 
     const listItems = () => {
+        console.log(existingRoles);
         var items = [];
         items = existingRoles.map((member, index) => {
             return (
                 <List.Item
                     title={member.email}
                     description={member.role}
-                    left={props => <List.Icon {...props} icon="account" />}
-
+                    left={(props) => <List.Icon {...props} icon="account" />}
                 />
-            )
+            );
         });
 
         return items;
-    }
-    
+    };
 
     return (
-
         <View style={styles.container}>
             <ScrollView style={formStyles.formContainer}>
                 <View style={formStyles.formElement}>
@@ -115,9 +116,7 @@ export default function ShareCalendarScreen({ route, navigation }) {
                     </RadioButton.Group>
                 </View>
 
-                <List.Section>
-                    {listItems()}
-                </List.Section>
+                <List.Section>{listItems()}</List.Section>
             </ScrollView>
 
             <View style={formStyles.formButtons}>
