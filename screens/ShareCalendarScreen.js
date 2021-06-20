@@ -75,7 +75,7 @@ export default function ShareCalendarScreen({ route, navigation }) {
                         getMyPermission() == "owner" && (
                             <IconButton
                                 icon="delete"
-                                size="24"
+                                size={26}
                                 onPress={() => {
                                     console.log(member.uid);
                                     firebase

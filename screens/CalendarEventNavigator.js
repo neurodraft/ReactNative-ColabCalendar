@@ -20,9 +20,7 @@ class CalendarEventNavigator extends Component {
         return (
             <Stack.Navigator
                 screenOptions={{
-                    headerStyle: {
-                        height: 40
-                    },
+                    
                     headerTitleStyle: {
                         justifyContent: 'center'
                     }

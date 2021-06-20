@@ -85,17 +85,17 @@ export default class DaysEventsScreen extends Component {
                             <View style={{flex : 1, flexDirection : 'row'}}>
                                 { 
                                     ['owner', 'collaborator'].some(c => c == this.getMyPermission())  
-                                        ? <IconButton icon="pencil" size="25" onPress={() => this.onEditEvent(event)}/> 
-                                        : ''
+                                        ? <IconButton icon="pencil" size={25} onPress={() => this.onEditEvent(event)}/> 
+                                        : null
                                 }
                                 {
                                      ['owner', 'collaborator'].some(c => c == this.getMyPermission()) 
-                                     ? <IconButton icon="delete" size="25"  onPress={() => {
+                                     ? <IconButton icon="delete" size={25}  onPress={() => {
                                         this.currentId = event.id;
                                         this.setState({...this.state, showDialogDelete : true})
                                     }}/>
 
-                                    : ''
+                                    : null
                                 }
                             </View>
                             <View>
@@ -185,7 +185,7 @@ export default class DaysEventsScreen extends Component {
                                 >{Strings.evNewEvent}</Button>                  
                             </View>               
                         )
-                        : ''
+                        : null
                 }               
                 <Dialog visible={this.state.showDialogDelete} onDismiss={() => this.currentId = null}>
                     <Dialog.Title>{Strings.warning}</Dialog.Title>

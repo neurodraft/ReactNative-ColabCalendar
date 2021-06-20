@@ -116,7 +116,7 @@ export default class InvitesScreen extends Component {
         });
 
         return (
-            <View style={styles.container}>
+            <View style={styles.fullPageContainer}>
                 <ScrollView>
                     <List.Section>{items}</List.Section>
                 </ScrollView>
