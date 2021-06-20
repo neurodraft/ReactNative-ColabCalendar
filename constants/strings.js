@@ -31,8 +31,19 @@ export default new LocalizedStrings({
         // Login
         logLogin: 'Login',
         logEmail: 'Email',
+        logEmailLabel: 'Email...',
         logPassword: 'Password',
+        logPasswordLabel: 'Password...',
+        logVerifyPasswordLabel:'Verify password...',
         logEmailPlaceholder: 'usersemail@email.com',
+        logLoginButton: 'Log in',
+        logSignUp: 'Sign up',
+        logLogOut: 'Logout',
+        logLogOutButton: 'Log Out',
+
+        // Settings
+        setSettingsScreen: 'Settings Screen',
+
 
         // Home
         hoCalendar: 'Calendar',
@@ -79,7 +90,46 @@ export default new LocalizedStrings({
         utiYes: "Yes",
         utiNo: "No",
         utiSearch: "Search",
-        utiConfirm: "Confirm"
+        utiConfirm: "Confirm",
+        utiCreateNew: "Create New",
+        utiEditCalendar: "Edit Calendar",
+
+        // Events
+        eveDaysEvents: "Day's Events",
+        eveNewEvent: "New Event",
+
+        // Invite Roles
+        invCollab: "Collaborate",
+        invView: "View",
+
+        // Months
+        months : [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ],
+
+        // Week Days
+        weekDays : [
+            "Sun", 
+            "Mon", 
+            "Tue", 
+            "Wed", 
+            "Thu", 
+            "Fri", 
+            "Sat"
+        ],
+
+
     },
 
     pt: {
@@ -112,8 +162,18 @@ export default new LocalizedStrings({
         // Login
         logLogin: 'Entrar',
         logEmail: 'Email',
+        logEmailLabel: 'Email...',
         logPassword: 'Palavra-passe',
+        logPasswordLabel: 'Password...',
+        logVerifyPasswordLabel:'Verificar password...',
         lgEmailPlaceholder: 'usersemail@email.com',
+        logLoginButton: 'Entrar',
+        logSignUp: 'Registar',
+        logLogOut: 'Sair',
+        logLogOutButton: 'Sair',
+
+        // Settings
+        setSettingsScreen: 'Menu de opções',
 
         // Home
         hoCalendar: 'Calendário',
@@ -141,6 +201,45 @@ export default new LocalizedStrings({
         utiYes: "Sim",
         utiNo: "Não",
         utiSearch: "Procura",
-        utiConfirm: "Confirmar"
+        utiConfirm: "Confirmar",
+        utiCreateNew: "Criar Novo",
+        utiEditCalendar: "Editar Calendário",
+
+        // Events
+        eveDaysEvents: "Eventos do Dia",
+        eveNewEvent: "Novo Evento",
+
+        // Invite Roles
+        invCollab: "Colaborar",
+        invView: "Visualizar",
+
+        // Months
+        months : [
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro",
+        ],
+
+        // Week Days
+        weekDays : [
+            "Dom", 
+            "Seg", 
+            "Ter", 
+            "Qua", 
+            "Qui", 
+            "Sex", 
+            "Sab"
+        ],
+
+        
     },
 })

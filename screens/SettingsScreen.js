@@ -4,6 +4,7 @@ import {View, Text, Button} from 'react-native';
 
 import styles from '../styles/global'
 import firebase from '../firebase'
+import Strings from "../constants/strings";
 
 
 class SettingsScreen extends Component {
@@ -13,11 +14,11 @@ class SettingsScreen extends Component {
             <View style={styles.container}>
                 
                 <Text>
-                    Settings Screen.
+                    {Strings.setSettingsScreen}
                 </Text>
                 
                 <Button 
-                    title="Logout"
+                    title={Strings.logLogOut}
                     onPress={() => {
                         firebase.auth().signOut();
                     }}

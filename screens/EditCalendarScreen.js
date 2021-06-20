@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import styles from "../styles/global";
 import formStyles from "../styles/form";
+import Strings from "../constants/strings";
 
 class EditCalendarScreen extends Component {
 
@@ -18,7 +19,7 @@ class EditCalendarScreen extends Component {
 
         return (            
             <View style={styles.container}>
-                <Text>Edit calendar</Text>
+                <Text>{Strings.utiEditCalendar}</Text>
             </View>
         )
     }

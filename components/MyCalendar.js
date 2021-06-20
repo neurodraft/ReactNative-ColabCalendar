@@ -3,9 +3,10 @@ import { View, Text, TouchableHighlight } from "react-native";
 import styles from "../styles/global";
 import firebase from "../firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Strings from "../constants/strings";
 
 class MyCalendar extends Component {
-    weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    weekDays = Strings.weekDays;
 
     unsubscribeListener;
 

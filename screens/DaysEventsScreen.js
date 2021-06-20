@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import { List } from 'react-native-paper';
 import firebase from '../firebase';
+import Strings from "../constants/strings";
 
 export default function DaysEventsScreen({route, navigation}) {
 
@@ -15,7 +16,7 @@ export default function DaysEventsScreen({route, navigation}) {
             flex : 1
         }}>
              <Button
-            title="New Event"
+            title={Strings.eveNewEvent}
                 onPress={() => {
                     navigation.navigate('New Event', {day: day, calendar: calendar});
                 }}

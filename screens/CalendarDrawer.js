@@ -15,6 +15,8 @@ import { View, Button, TouchableHighlight } from "react-native";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+import Strings from "../constants/strings";
+
 const Drawer = createDrawerNavigator();
 
 class CalendarDrawer extends Component {
@@ -140,7 +142,7 @@ function CustomDrawerContent(props) {
             >
                 <Button
                     style={{}}
-                    title="Create New"
+                    title={Strings.utiCreateNew}
                     onPress={() => {
                         props.newCalendar();
                     }}
