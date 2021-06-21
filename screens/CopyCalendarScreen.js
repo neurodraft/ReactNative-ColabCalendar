@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Text, View, ScrollView } from "react-native";
-import { TextInput, HelperText, Button, Paragraph, Dialog } from "react-native-paper";
+import {
+    TextInput,
+    HelperText,
+    Button,
+    Paragraph,
+    Dialog,
+} from "react-native-paper";
 
 import styles from "../styles/global";
 import formStyles from "../styles/form";
@@ -8,44 +14,64 @@ import formStyles from "../styles/form";
 import Strings from "../constants/strings";
 import firebase from "../firebase";
 
-export default function CopyCalendarScreen({ route, navigation}) {
-
-    const {calendar} = route.params;
+export default function CopyCalendarScreen({ route, navigation }) {
+    const { calendar } = route.params;
 
     const [title, setTitle] = useState(`Copy - ${calendar.title}`);
     const [titleError, setTitleError] = useState("");
-    const [desc, setDesc] = useState(calendar.desc ? calendar.desc : '');
-    const [dialogDelete, setDialogDelete] = useState({ show: false, message: "" })
-
+    const [desc, setDesc] = useState(calendar.desc ? calendar.desc : "");
+    const [dialogDelete, setDialogDelete] = useState({
+        show: false,
+        message: "",
+    });
 
     const currentUID = firebase.auth().currentUser.uid;
 
     const copyCalendar = () => {
-
         const copyCalendar = {
-            title : title,
-            description : desc,
-            id_user : currentUID,
-            roles : {
-                [currentUID] : 'owner'
-            }
-        }
-
+            title: title,
+            description: desc,
+            id_user: currentUID,
+            roles: {
+                [currentUID]: "owner",
+            },
+        };
         firebase
             .firestore()
             .collection("calendars")
             .add(copyCalendar)
-            .then((docRef) => {               
+            .then((docRef) => {
+                firebase.firestore()
+                    .collection("calendars")
+                    .doc(calendar.id)
+                    .collection("events")
+                    .get()
+                    .then((querySnapshot) => {
+                        var promises = [];
+                        querySnapshot.forEach((doc) => {
+                            promises.push(
+                                firebase
+                                    .firestore()
+                                    .collection("calendars")
+                                    .doc(docRef.id)
+                                    .collection("events")
+                                    .add(doc.data())
+                            );
+                        });
+                        Promise.all(promises);
+                    })
+                    .catch((error) => {
+                        console.log("Error getting documents: ", error);
+                    });
                 navigation.navigate("Calendar");
             })
             .catch((error) => {
-                setDialogDelete({show : true, message : error.message})
+                setDialogDelete({ show: true, message: error.message });
             });
-    }
+    };
 
     return (
         <View style={styles.container}>
-
             <ScrollView style={formStyles.formContainer}>
                 <View style={formStyles.formElement}>
                     <TextInput
@@ -70,7 +96,6 @@ export default function CopyCalendarScreen({ route, navigation}) {
                         numberOfLines={4}
                     />
                 </View>
-
             </ScrollView>
 
             <View style={formStyles.formButtons}>
@@ -96,21 +121,29 @@ export default function CopyCalendarScreen({ route, navigation}) {
                             copyCalendar();
                         }}
                     >
-                           {Strings.genSave}
+                        {Strings.genSave}
                     </Button>
-                </View>                   
+                </View>
             </View>
-            <Dialog visible={dialogDelete.show} onDismiss={() => this.currentId = null}>
-                    <Dialog.Title>{Strings.warning}</Dialog.Title>
-                    <Dialog.Content>
-                        <Paragraph>{dialogDelete.message}</Paragraph>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={() => setDialogDelete({...dialogDelete, show : false})}>{Strings.genCancel}</Button>
-                        <Button onPress={() => onDelete()}>{Strings.genYes}</Button>
-                    </Dialog.Actions>
-                </Dialog>
+            <Dialog
+                visible={dialogDelete.show}
+                onDismiss={() => (this.currentId = null)}
+            >
+                <Dialog.Title>{Strings.warning}</Dialog.Title>
+                <Dialog.Content>
+                    <Paragraph>{dialogDelete.message}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button
+                        onPress={() =>
+                            setDialogDelete({ ...dialogDelete, show: false })
+                        }
+                    >
+                        Cancelar
+                    </Button>
+                    <Button onPress={() => onDelete()}>{Strings.genYes}</Button>
+                </Dialog.Actions>
+            </Dialog>
         </View>
     );
 }
-

@@ -8,7 +8,6 @@ import Strings from "../constants/strings";
 import {Badge} from "react-native-paper";
 
 class MyCalendar extends Component {
-    weekDays = Strings.weekDays;
 
     unsubscribeListener;
 
@@ -90,7 +89,7 @@ class MyCalendar extends Component {
     generateMatrix(today) {
         var matrix = [];
         // Create header
-        matrix[0] = this.weekDays;
+        matrix[0] = Strings.weekDays;
 
         // Get current year and month
         var year = today.getFullYear();

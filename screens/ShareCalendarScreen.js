@@ -141,7 +141,7 @@ export default function ShareCalendarScreen({ route, navigation }) {
                                 alignItems: "center",
                             }}
                         >
-                            <Text>Collaborator</Text>
+                            <Text>{Strings.roCollab}</Text>
                             <RadioButton value={"collaborator"} />
                         </View>
                         <View
@@ -151,7 +151,7 @@ export default function ShareCalendarScreen({ route, navigation }) {
                                 alignItems: "center",
                             }}
                         >
-                            <Text>Viewer</Text>
+                            <Text>{Strings.roView}</Text>
                             <RadioButton value={"viewer"} />
                         </View>
                     </RadioButton.Group>

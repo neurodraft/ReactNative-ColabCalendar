@@ -124,7 +124,7 @@ export default function NewEventScreen({ route, navigation }) {
                                 }}
                             >
                                 <Text style={{ textAlignVertical: "center" }}>
-                                    5 Minutes Before
+                                    {Strings.gen5min}
                                 </Text>
                                 <RadioButton value={5} />
                             </View>
@@ -135,7 +135,7 @@ export default function NewEventScreen({ route, navigation }) {
                                 }}
                             >
                                 <Text style={{ textAlignVertical: "center" }}>
-                                    15 Minutes Before
+                                    {Strings.gen15min}
                                 </Text>
                                 <RadioButton value={15} />
                             </View>
@@ -146,7 +146,7 @@ export default function NewEventScreen({ route, navigation }) {
                                 }}
                             >
                                 <Text style={{ textAlignVertical: "center" }}>
-                                    30 Minutes Before
+                                    {Strings.gen30min}
                                 </Text>
                                 <RadioButton value={30} />
                             </View>

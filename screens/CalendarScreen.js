@@ -12,7 +12,6 @@ import strings from "../constants/strings";
 import styles from "../styles/global";
 
 class CalendarScreen extends Component {
-    months = strings.months;
 
     constructor(props) {
         super(props);
@@ -98,7 +97,7 @@ class CalendarScreen extends Component {
                             fontWeight: "bold",
                         }}
                     >
-                        {this.months[this.state.selectedDate.getMonth()]} &nbsp;
+                        {strings.months[this.state.selectedDate.getMonth()]} &nbsp;
                         {this.state.selectedDate.getFullYear()}
                     </Text>
 

@@ -111,6 +111,10 @@ export default new LocalizedStrings({
         utiCreateNew: "Create New",
         utiEditCalendar: "Edit Calendar",
 
+        // Roles
+        roCollab: "Collaborator",
+        roView: "Viewer",
+
         // Invite Roles
         invCollab: "Collaborate",
         invView: "View",
@@ -251,6 +255,10 @@ export default new LocalizedStrings({
         selectCal: 'Selecione o calendário destino.',
         evDaysEvents: "Eventos do Dia",
         evCopy: 'Copiar evento',
+
+        // Roles
+        roCollab: "Colaborador",
+        roView: "Visualizador",
 
         // Invite Roles
         invCollab: "Colaborar",
