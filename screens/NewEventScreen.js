@@ -113,7 +113,7 @@ export default function NewEventScreen({ route, navigation }) {
                                 }}
                             >
                                 <Text style={{ textAlignVertical: "center" }}>
-                                    {Strings.genOntime}
+                                    {Strings.genOnTime}
                                 </Text>
                                 <RadioButton value={0} />
                             </View>
