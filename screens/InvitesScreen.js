@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { List, Button } from "react-native-paper";
+import strings from "../constants/strings";
 import firebase from "../firebase";
 
 import styles from "../styles/global";
@@ -86,7 +87,7 @@ export default class InvitesScreen extends Component {
                                         });
                                 }}
                             >
-                                Accept
+                                {strings.genAccept}
                             </Button>
                             <Button
                                 onPress={() => {
@@ -107,7 +108,7 @@ export default class InvitesScreen extends Component {
                                     });
                                 }}
                             >
-                                Reject
+                                {strings.genReject}
                             </Button>
                         </View>
                     )}

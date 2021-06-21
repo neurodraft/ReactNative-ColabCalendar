@@ -62,7 +62,7 @@ export default function CopyEventScreen({ route, navigation }) {
 
     const onClone = () => {
         if (!calendarId) {
-            setSnackbar({ visible: true, message: "Select a calendar." });
+            setSnackbar({ visible: true, message: Strings.calSelectCalendar });
             return;
         }
 

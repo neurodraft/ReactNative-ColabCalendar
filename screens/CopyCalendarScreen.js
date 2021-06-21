@@ -106,7 +106,7 @@ export default function CopyCalendarScreen({ route, navigation}) {
                         <Paragraph>{dialogDelete.message}</Paragraph>
                     </Dialog.Content>
                     <Dialog.Actions>
-                        <Button onPress={() => setDialogDelete({...dialogDelete, show : false})}>Cancelar</Button>
+                        <Button onPress={() => setDialogDelete({...dialogDelete, show : false})}>{Strings.genCancel}</Button>
                         <Button onPress={() => onDelete()}>{Strings.genYes}</Button>
                     </Dialog.Actions>
                 </Dialog>

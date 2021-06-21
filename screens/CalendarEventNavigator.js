@@ -40,22 +40,22 @@ class CalendarEventNavigator extends Component {
                 <Stack.Screen
                     name="Day's Events"
                     component={DaysEventsScreen}
-                    options={{ title: Strings.eveDaysEvents }}
+                    options={{ title: Strings.evDaysEvents }}
                 />
                 <Stack.Screen
                     name="New Event"
                     component={NewEventScreen}
-                    options={{ title: Strings.eveNewEvent }}
+                    options={{ title: Strings.evNewEvent }}
                 />
                  <Stack.Screen
                     name="edit-event"
                     component={EditEventScreen}
-                    options={{ title: "Edit Event" }}
+                    options={{ title: Strings.evEditEvent }}
                 />
                 <Stack.Screen
                     name="copy-event"
                     component={CopyEventScreen}
-                    options={{ title: "Copy Event" }}
+                    options={{ title: Strings.evCopy }}
                 />
             </Stack.Navigator>
         );

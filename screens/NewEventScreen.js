@@ -79,7 +79,7 @@ export default function NewEventScreen({ route, navigation }) {
                             setDatePickerVisible(true);
                         }}
                     >
-                        Set Time
+                        {Strings.genSetTime}
                     </Button>
                 </View>
 
@@ -89,7 +89,7 @@ export default function NewEventScreen({ route, navigation }) {
                         justifyContent: "space-evenly",
                     }}
                 >
-                    <Title>Remind me</Title>
+                    <Title>{Strings.genRemindMe}</Title>
                     <Switch style={{marginTop : 8, marginLeft : 10}}
                         value={remindMe}
                         onValueChange={(value) => setRemindMe(value)}
@@ -113,7 +113,7 @@ export default function NewEventScreen({ route, navigation }) {
                                 }}
                             >
                                 <Text style={{ textAlignVertical: "center" }}>
-                                    On Time
+                                    {Strings.genOntime}
                                 </Text>
                                 <RadioButton value={0} />
                             </View>
