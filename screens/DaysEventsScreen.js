@@ -266,7 +266,7 @@ export default class DaysEventsScreen extends Component {
                                 })
                             }
                         >
-                            Cancelar
+                            {Strings.genCancel}
                         </Button>
                         <Button onPress={() => this.onDeleteEvent()}>
                             {Strings.genYes}

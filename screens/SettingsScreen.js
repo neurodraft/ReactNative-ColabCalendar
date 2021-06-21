@@ -48,7 +48,7 @@ class SettingsScreen extends Component {
                             firebase.auth().signOut();
                         }}
                     >
-                        Logout
+                        {Strings.logLogOut}
                     </Button>
                 </View>
             </View>

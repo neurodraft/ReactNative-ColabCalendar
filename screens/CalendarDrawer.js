@@ -200,7 +200,7 @@ class CalendarDrawer extends Component {
         }
         return (
             <View style={styles.container}>
-                <Text>No calendars found...</Text>
+                <Text>{Strings.calNoCalendarFound}</Text>
                 <Button
                     mode="contained"
                     onPress={() => {

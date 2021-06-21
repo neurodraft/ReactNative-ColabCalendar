@@ -6,6 +6,7 @@ export default new LocalizedStrings({
         genEdit: 'Edit',
         genDone: 'Done',
         genAccept: 'Accept',
+        genReject: 'Reject',
         genCancel: 'Cancel',
         genRemove: 'Remove',
         genDelete: 'Delete',
@@ -32,6 +33,13 @@ export default new LocalizedStrings({
         edited : 'successfully edited',
         warning : 'Warnign',
         isDelete : 'Do you really want to delete it?',
+        genRemindMe: 'Remind me',
+        genSetTime: 'Set time',
+        genOnTime: 'On time',
+        gen5min: '5 Minutes Before',
+        gen15min: '15 Minutes Before',
+        gen30min: '30 Minutes Before',
+        
 
         // Login
         logLogin: 'Login',
@@ -69,11 +77,15 @@ export default new LocalizedStrings({
         evNoTitle: 'The event must have a title.',
         evEventDate: 'Event Date',
         selectCal: 'Select a destination calendar.',
+        evDaysEvents: "Day's Events",
+        evCopy: 'Copy Event',
 
         // Calendars
         calNewCalendar : 'New Calendar',
         calCalendarTitle: 'Calendar Title',
         calCalendarDesc: 'Calendar Description',
+        calNoCalendarFound: 'No calendars found...',
+        calSelectCalendar: 'Select a calendar',
 
         // Errors
         errEmail: 'Invalid email',
@@ -99,9 +111,9 @@ export default new LocalizedStrings({
         utiCreateNew: "Create New",
         utiEditCalendar: "Edit Calendar",
 
-        // Events
-        eveDaysEvents: "Day's Events",
-        eveNewEvent: "New Event",
+        // Roles
+        roCollab: "Collaborator",
+        roView: "Viewer",
 
         // Invite Roles
         invCollab: "Collaborate",
@@ -143,6 +155,7 @@ export default new LocalizedStrings({
         genEdit: 'Editar',
         genDone: 'Concluir',
         genAccept: 'Aceitar',
+        genReject: 'Rejeitar',
         genCancel: 'Cancelar',
         genRemove: 'Remover',
         genDelete: 'Eliminar',
@@ -165,9 +178,15 @@ export default new LocalizedStrings({
         genUnitPriceLable: 'Preço unitário',
         genQuantityLable: 'Quantidade',
         genCopy: 'Copiar',
-
         warning : 'Aviso',
         isDelete : 'Realmente deseja exclui-lo?',
+        genRemindMe: 'Relembrar-me',
+        genSetTime: 'Definir tempo',
+        genOnTime: 'Na hora',
+        gen5min: '5 Minutos Antes',
+        gen15min: '15 Minutos Antes',
+        gen30min: '30 Minutes Antes',
+
         // Login
         logLogin: 'Entrar',
         logEmail: 'Email',
@@ -193,8 +212,13 @@ export default new LocalizedStrings({
         hoSettings: 'Definições',
         hoNofitications: 'Notificações',
 
+        // Calendars
+        calNewCalendar : 'Novo calendário',
         calendarTitle: 'Título do calendário',
         calendarDesc: 'Descrição do calendário',
+        calNoCalendarFound: 'Não foram encontrados calendários',
+        calSelectCalendar: 'Selecione um calendário',
+
         // Errors
         errEmail: 'Email inválido',
         errPassword: 'Palavra-passe inválida',
@@ -220,8 +244,21 @@ export default new LocalizedStrings({
         utiEditCalendar: "Editar Calendário",
 
         // Events
-        eveDaysEvents: "Eventos do Dia",
-        eveNewEvent: "Novo Evento",
+        evEvents: 'Events',
+        evNewEvent: 'Novo Evento',
+        evEditEvent: 'Editar evento',
+        evEventTitle: 'Título do evento',
+        evEventDesc: 'Descrição do evento',
+        evCreateEvent: 'Criar Evento',
+        evNoTitle: 'O evento tem de ter um título.',
+        evEventDate: 'Data do evento',
+        selectCal: 'Selecione o calendário destino.',
+        evDaysEvents: "Eventos do Dia",
+        evCopy: 'Copiar evento',
+
+        // Roles
+        roCollab: "Colaborador",
+        roView: "Visualizador",
 
         // Invite Roles
         invCollab: "Colaborar",
@@ -256,8 +293,6 @@ export default new LocalizedStrings({
 
         
 
-        evNewEvent: 'Novo evento',
-        evEditEvent: 'Editar evento',
         deleted : 'Deletado com successo',
         edited : 'Editado com sucesso',
         emptyResults : 'Nenhum resultado encontrado...',
