@@ -16,7 +16,7 @@ class CalendarScreen extends Component {
 
     constructor(props) {
         super(props);
-       
+        console.log('aqui')
         this.state = {
             selectedDate: new Date(),
         };
@@ -59,43 +59,6 @@ class CalendarScreen extends Component {
                     justifyContent: "flex-start",
                 }}
             >
-            {/*
-                <View
-                    style={{
-                        width: "100%",
-                        paddingHorizontal: 10,
-                        paddingVertical: 10,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        backgroundColor: "lightblue",
-                    }}
-                >
-                    <TouchableHighlight
-                        onPress={() => {
-                            this.props.route.params.toggleDrawer();
-                        }}
-                    >
-                        <Ionicons name="menu" size={24} />
-                    </TouchableHighlight>
-                    <Text
-                        style={{
-                            textAlign: "center",
-                            fontSize: 16,
-                            height: "100%",
-                            fontWeight: "bold",
-                        }}
-                    >
-                        {this.props.route.params.calendar.title}
-                    </Text>
-                    <TouchableHighlight
-                        onPress={() => {
-                            this.props.route.params.toggleDrawer();
-                        }}
-                    >
-                        <Ionicons name="create" size={24} />
-                    </TouchableHighlight>
-                </View>
-                */}
 
                 <View
                     style={{

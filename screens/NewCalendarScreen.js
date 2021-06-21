@@ -13,6 +13,9 @@ export default function NewCalendarScreen({ route, navigation }) {
     const [titleError, setTitleError] = useState("");
     const [desc, setDesc] = useState("");
 
+
+    const currentUID = firebase.auth().currentUser.uid;
+
     return (
         <View style={styles.container}>
 
@@ -24,7 +27,7 @@ export default function NewCalendarScreen({ route, navigation }) {
                         error={titleError != ""}
                         value={title}
                         onChangeText={(value) => setTitle(value)}
-                        //placeholder={Strings.evEventTitle}
+                        placeholder={Strings.calendarTitle}
                     />
                     <HelperText type="error" visible={titleError != ""}>
                         {titleError}
@@ -39,7 +42,7 @@ export default function NewCalendarScreen({ route, navigation }) {
                         onChangeText={(value) => setDesc(value)}
                         multiline={true}
                         numberOfLines={4}
-                        //placeholder={Strings.evEventTitle}
+                        placeholder={Strings.calendarDesc}
                     />
                 </View>
 
@@ -71,8 +74,9 @@ export default function NewCalendarScreen({ route, navigation }) {
                             .add({
                                 title: title,
                                 desc: desc,
+                                id_user : currentUID,
                                 roles: {
-                                    [firebase.auth().currentUser.uid]: "owner"
+                                    [currentUID]: "owner"
                                 },
                             })
                             .then((docRef) => {
@@ -87,7 +91,7 @@ export default function NewCalendarScreen({ route, navigation }) {
                             });
                     }}
                 >
-                    {Strings.calCreateCal}
+                    {Strings.genSave}
                 </Button>
             </View>
         </View>

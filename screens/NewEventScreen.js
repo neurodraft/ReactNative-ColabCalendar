@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { Text, View, Platform, ScrollView } from "react-native";
-import { TextInput, HelperText, Button } from "react-native-paper";
+import {
+    Title,
+    TextInput,
+    HelperText,
+    Button,
+    Switch,
+    RadioButton,
+} from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import styles from "../styles/global";
@@ -8,12 +15,14 @@ import formStyles from "../styles/form";
 import Strings from "../constants/strings";
 import firebase from "../firebase";
 
+import * as Notifications from "expo-notifications";
+
 export default function NewEventScreen({ route, navigation }) {
     const { day, calendar } = route.params;
 
     const [titleError, setTitleError] = useState("");
     const [title, setTitle] = useState("");
-    
+
     var initialDate = new Date(day);
     initialDate.setSeconds(0);
 
@@ -21,11 +30,17 @@ export default function NewEventScreen({ route, navigation }) {
 
     const [datePickerVisible, setDatePickerVisible] = useState(false);
 
+    const [remindMe, setRemindMe] = useState(false);
+    const [minutesBefore, setMinutesBefore] = useState(0);
+
     const [desc, setDesc] = useState("");
 
     return (
         <View style={styles.container}>
-            <ScrollView style={formStyles.formContainer}>
+            <ScrollView
+                style={formStyles.formContainer}
+                contentContainerStyle={{ alignItems: "center" }}
+            >
                 <View style={formStyles.formElement}>
                     <TextInput
                         mode="outlined"
@@ -67,6 +82,77 @@ export default function NewEventScreen({ route, navigation }) {
                         Set Time
                     </Button>
                 </View>
+
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-evenly",
+                    }}
+                >
+                    <Title>Remind me</Title>
+                    <Switch style={{marginTop : 8, marginLeft : 10}}
+                        value={remindMe}
+                        onValueChange={(value) => setRemindMe(value)}
+                    />
+                </View>
+                {remindMe && (
+                    <View
+                        style={{
+                            marginTop: 20,
+                            width: "60%",
+                        }}
+                    >
+                        <RadioButton.Group
+                            onValueChange={(value) => setMinutesBefore(value)}
+                            value={minutesBefore}
+                        >
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <Text style={{ textAlignVertical: "center" }}>
+                                    On Time
+                                </Text>
+                                <RadioButton value={0} />
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <Text style={{ textAlignVertical: "center" }}>
+                                    5 Minutes Before
+                                </Text>
+                                <RadioButton value={5} />
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <Text style={{ textAlignVertical: "center" }}>
+                                    15 Minutes Before
+                                </Text>
+                                <RadioButton value={15} />
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <Text style={{ textAlignVertical: "center" }}>
+                                    30 Minutes Before
+                                </Text>
+                                <RadioButton value={30} />
+                            </View>
+                        </RadioButton.Group>
+                    </View>
+                )}
             </ScrollView>
 
             <View style={formStyles.formButtons}>
@@ -75,7 +161,11 @@ export default function NewEventScreen({ route, navigation }) {
                     color="grey"
                     labelStyle={{ color: "white" }}
                     onPress={() => {
-                        navigation.goBack();
+                        navigation.navigate("Day's Events", {
+                            day: day,
+                            calendar:calendar,
+                            refresh : true,
+                        })
                     }}
                 >
                     {Strings.genCancel}
@@ -99,12 +189,57 @@ export default function NewEventScreen({ route, navigation }) {
                                 desc: desc,
                                 date: date,
                             })
-                            .then((docRef) => {
+                            .then(async (docRef) => {
                                 console.log(
                                     "Document written with ID: ",
                                     docRef.id
                                 );
-                                navigation.goBack();
+
+                                if (remindMe) {
+                                    var secondsUntilReminder =
+                                        Math.floor(
+                                            (date.getTime() -
+                                                new Date().getTime()) / 1000
+                                        ) - (minutesBefore * 60) + 1;
+
+                                    console.log(secondsUntilReminder);
+
+                                    const identifier = await Notifications.scheduleNotificationAsync(
+                                        {
+                                            content: {
+                                                title: title,
+                                                body: `In ${minutesBefore} minutes...`,
+                                                data: {},
+                                            },
+                                            trigger: {
+                                                seconds: secondsUntilReminder,
+                                            },
+                                        }
+                                    );
+
+                                    firebase
+                                        .firestore()
+                                        .collection("users")
+                                        .doc(firebase.auth().currentUser.uid)
+                                        .collection("reminders")
+                                        .add({
+                                            eventId: docRef.id,
+                                            userId: firebase.auth().currentUser
+                                                .uid,
+                                            identifier: identifier,
+                                        })
+                                        .then(ok => navigation.navigate("Day's Events", {
+                                            day: day,
+                                            calendar:calendar
+                                        }))
+                                }else {
+
+                                    navigation.navigate("Day's Events", {
+                                        day: day,
+                                        calendar:calendar
+                                    });
+                                }
+
                             })
                             .catch((error) => {
                                 console.error("Error adding document: ", error);
@@ -123,7 +258,6 @@ export default function NewEventScreen({ route, navigation }) {
                         setDatePickerVisible(false);
                         setDate(selectedDate || date);
                     }}
-                
                 />
             )}
 

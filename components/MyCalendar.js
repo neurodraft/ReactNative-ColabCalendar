@@ -5,6 +5,8 @@ import firebase from "../firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Strings from "../constants/strings";
 
+import {Badge} from "react-native-paper";
+
 class MyCalendar extends Component {
     weekDays = Strings.weekDays;
 
@@ -17,30 +19,31 @@ class MyCalendar extends Component {
             matrix: this.generateMatrix(props.selectedDate()),
             events: [],
         };
-
-        
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.unsubscribeListener = firebase
             .firestore()
             .collection("calendars")
             .doc(this.props.calendar.id)
             .collection("events")
             .onSnapshot((querySnapshot) => {
+                var newEvents = [];
                 querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
                     console.log(doc.id, " => ", doc.data());
-                    this.setState({
-                        ...this.state.matrix,
-                        events: [...this.state.events, doc.data()],
-                    });
+                    newEvents = [...newEvents, doc.data()];
+                });
+
+                this.setState({
+                    ...this.state,
+                    events: newEvents,
                 });
             });
     }
 
-    componentWillUnmount(){
-        if(!!this.unsubscribeListener){
+    componentWillUnmount() {
+        if (!!this.unsubscribeListener) {
             this.unsubscribeListener();
         }
     }
@@ -63,6 +66,27 @@ class MyCalendar extends Component {
         return false;
     }
 
+    numberOfEvents(day) {
+        var checking = new Date(this.props.selectedDate().getTime());
+        checking.setDate(day);
+
+        var count= 0;
+
+        for (var i = 0; i < this.state.events.length; i++) {
+            var event = this.state.events[i];
+            var date = event["date"].toDate();
+            if (
+                checking.getFullYear() === date.getFullYear() &&
+                checking.getMonth() === date.getMonth() &&
+                checking.getDate() === date.getDate()
+            ) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     generateMatrix(today) {
         var matrix = [];
         // Create header
@@ -78,7 +102,7 @@ class MyCalendar extends Component {
         var firstDay = date.getDay();
 
         // Get number of days in month
-        const maxDays = new Date(year, month+1, 0).getDate();
+        const maxDays = new Date(year, month + 1, 0).getDate();
 
         // Populate matrix
         var counter = 1;
@@ -122,6 +146,7 @@ class MyCalendar extends Component {
         var rows = [];
         rows = this.state.matrix.map((row, rowIndex) => {
             var rowItems = row.map((item, colIndex) => {
+                var numberOfEvents = this.numberOfEvents(item);
                 return (
                     <TouchableHighlight
                         style={{
@@ -159,12 +184,10 @@ class MyCalendar extends Component {
                             >
                                 {item != -1 ? item : ""}
                             </Text>
-                            {item != 1 && this.areThereEvents(item) && (
-                                <Ionicons
-                                    color="tomato"
-                                    name="ellipse"
-                                    size={8}
-                                />
+                            {item != 1 && (numberOfEvents > 0) && (
+                                <Badge
+                                    style={{backgroundColor: "tomato", color: "white"}}
+                                >{numberOfEvents}</Badge>
                             )}
                         </View>
                     </TouchableHighlight>

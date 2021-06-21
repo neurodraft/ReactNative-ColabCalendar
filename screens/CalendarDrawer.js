@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { Divider } from "react-native-elements";
-
+import styles from "../styles/global";
 import {
     DrawerContentScrollView,
     DrawerItemList,
@@ -11,9 +11,11 @@ import {
 
 import firebase from "../firebase";
 import CalendarEventNavigator from "./CalendarEventNavigator";
-import { View, Button, TouchableHighlight } from "react-native";
+import { Text, View, TouchableHighlight, Modal } from "react-native";
+import { Button, Title, Paragraph, Dialog } from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
+import strings from "../constants/strings";
 
 import Strings from "../constants/strings";
 
@@ -24,8 +26,11 @@ class CalendarDrawer extends Component {
 
     constructor(props) {
         super(props);
+        console.log('props ', props)
         this.state = {
             calendars: [],
+            shareVisible: false,
+            showDialogDelete : false,
         };
     }
 
@@ -36,12 +41,12 @@ class CalendarDrawer extends Component {
             .where(`roles.${firebase.auth().currentUser.uid}`, "in", [
                 "owner",
                 "collaborator",
+                "viewer"
             ])
             .onSnapshot((querySnapshot) => {
+                this.clearCalendars();
                 querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    //console.log(doc.id, " => ", doc.data());
-                    //console.dir(doc.data());
+                
                     var calendar = {
                         ...doc.data(),
                         id: doc.id,
@@ -52,10 +57,17 @@ class CalendarDrawer extends Component {
             });
     }
 
-    componentWillUnmount(){
-        if(!!this.unsubscribeListener){
+    componentWillUnmount() {
+        if (!!this.unsubscribeListener) {
             this.unsubscribeListener();
         }
+    }
+
+    clearCalendars() {
+        this.setState({
+            ...this.state,
+            calendars: [],
+        });
     }
 
     addCalendar(calendar) {
@@ -69,35 +81,99 @@ class CalendarDrawer extends Component {
         this.props.navigation.navigate("New Calendar");
     }
 
+    setShareVisible(value) {
+        this.setState({
+            ...this.state,
+            shareVisible: value,
+        });
+    }
+
     render() {
+        console.log(this.state.calendars)
         if (this.state.calendars.length > 0) {
             var calendarScreens = [];
             calendarScreens = this.state.calendars.map((calendar, index) => {
+                const myPermission = calendar.roles[firebase.auth().currentUser.uid];
+
+            
                 return (
                     <Drawer.Screen
-                        name={calendar.title}
+                        name={index + calendar.title}
                         component={CalendarEventNavigator}
                         initialParams={{ calendar: calendar }}
                         options={{
+                            title: calendar.title,
                             headerShown: true,
                             headerStyle: { backgroundColor: "tomato" },
                             headerTintColor: "white",
                             headerRight: () => (
-                                <TouchableHighlight
-                                    style={{ marginRight: 10 }}
-                                    onPress={() => {
-                                        this.props.navigation.navigate(
-                                            "Edit Calendar",
-                                            { calendar: calendar }
-                                        );
-                                    }}
-                                >
-                                    <Ionicons
-                                        color="white"
-                                        name="create-outline"
-                                        size={24}
-                                    />
-                                </TouchableHighlight>
+                                ['owner', 'collaborator'].some(c => c == myPermission)  ?
+                                    <View style={{ flexDirection: "row" }}>
+                                        <TouchableHighlight
+                                            style={{ marginRight: 10 }}
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    "Share Calendar",
+                                                    { calendar: calendar }
+                                                );
+                                            }}
+                                        >
+                                            <Ionicons
+                                                color="white"
+                                                name="share-outline"
+                                                size={24}
+                                            />
+                                        </TouchableHighlight>
+                                        <TouchableHighlight
+                                            style={{ marginRight: 10 }}
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    "Edit Calendar",
+                                                    { calendar: calendar }
+                                                );
+                                            }}
+                                        >
+                                            <Ionicons
+                                                color="white"
+                                                name="create-outline"
+                                                size={24}
+                                            />
+                                        </TouchableHighlight>
+                                        <TouchableHighlight
+                                            style={{ marginRight: 10 }}
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    "Copy Calendar",
+                                                    { calendar: calendar }
+                                                );
+                                            }}
+                                        >
+                                            <Ionicons
+                                                color="white"
+                                                name="copy"
+                                                size={24}
+                                            />
+                                        </TouchableHighlight>
+                                    </View>
+                                : (
+                                    <View style={{ flexDirection: "row" }}>
+                                        <TouchableHighlight
+                                            style={{ marginRight: 10 }}
+                                            onPress={() => {
+                                                this.props.navigation.navigate(
+                                                    "Copy Calendar",
+                                                    { calendar: calendar }
+                                                );
+                                            }}
+                                        >
+                                            <Ionicons
+                                                color="white"
+                                                name="copy"
+                                                size={24}
+                                            />
+                                        </TouchableHighlight>
+                                    </View>
+                                )
                             ),
                         }}
                         key={index}
@@ -105,11 +181,11 @@ class CalendarDrawer extends Component {
                 );
             });
 
-            return (
+            return (        
                 <Drawer.Navigator
-                    drawerContent={(props) => (
-                        <CustomDrawerContent
-                            {...props}
+                drawerContent={(props) => (
+                    <CustomDrawerContent
+                        {...props}
                             newCalendar={() => this.newCalendarScreen()}
                         />
                     )}
@@ -118,10 +194,23 @@ class CalendarDrawer extends Component {
                     }}
                 >
                     {calendarScreens}
+                    
                 </Drawer.Navigator>
             );
         }
-        return <View></View>;
+        return (
+            <View style={styles.container}>
+                <Text>No calendars found...</Text>
+                <Button
+                    mode="contained"
+                    onPress={() => {
+                        props.newCalendar();
+                    }}
+                >
+                    {strings.calNewCalendar}
+                </Button>
+            </View>
+        );
     }
 }
 
@@ -141,12 +230,13 @@ function CustomDrawerContent(props) {
                 }}
             >
                 <Button
-                    style={{}}
-                    title={Strings.utiCreateNew}
+                    mode="contained"
                     onPress={() => {
                         props.newCalendar();
                     }}
-                />
+                >
+                    {Strings.utiCreateNew}
+                </Button>
             </View>
         </View>
     );

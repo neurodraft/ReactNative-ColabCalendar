@@ -42,6 +42,7 @@ export default function SignupScreen({ navigation }) {
                     Calendar.new({
                         title: "My Calendar",
                         description: "My Personal Calendar",
+                        id_user : userCredential.user.uid,
                         roles: {
                             [userCredential.user.uid] : 'owner'
                         }
