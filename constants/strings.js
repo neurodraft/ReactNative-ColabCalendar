@@ -27,6 +27,7 @@ export default new LocalizedStrings({
         genNameLable: 'Name',
         genUnitPriceLable: 'Unit price',
         genQuantityLable: 'Quantity',
+        genCopy: 'Copy',
         deleted : 'successfully deleted',
         edited : 'successfully edited',
         warning : 'Warnign',
@@ -52,6 +53,7 @@ export default new LocalizedStrings({
         evCreateEvent: 'Create Event',
         evNoTitle: 'The event must have a title.',
         evEventDate: 'Event Date',
+        selectCal: 'Select a destination calendar.',
 
         // Calendars
         calNewCalendar : 'New Calendar',
@@ -108,6 +110,8 @@ export default new LocalizedStrings({
         genNameLable: 'Nome',
         genUnitPriceLable: 'Preço unitário',
         genQuantityLable: 'Quantidade',
+        genCopy: 'Copiar',
+
         warning : 'Aviso',
         isDelete : 'Realmente deseja exclui-lo?',
         // Login
@@ -151,6 +155,7 @@ export default new LocalizedStrings({
         edited : 'Editado com sucesso',
         emptyResults : 'Nenhum resultado encontrado...',
         calDel : 'Deletar calendar',
+        selectCal: 'Selecione um calendario destino.',
 
         calNewCalendar : 'Adicionar calendário'
     },

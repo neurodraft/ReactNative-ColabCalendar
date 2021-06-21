@@ -47,6 +47,10 @@ export default function EditCalendarScreen({ route, navigation }) {
             });
     };
 
+    const getMyPermission = () => {
+        return calendar.roles[firebase.auth().currentUser.uid];
+    };
+
     return (
         <View style={styles.container}>
             <ScrollView style={formStyles.formContainer}>
@@ -111,23 +115,29 @@ export default function EditCalendarScreen({ route, navigation }) {
                     >
                         {Strings.genSave}
                     </Button>
-                    <Button
-                        mode="contained"
-                        style={{ marginTop: 10 }}
-                        onPress={() =>
-                            setDialogDelete({
-                                show: true,
-                                message: Strings.isDelete,
-                            })
-                        }
-                    >
-                        {Strings.genRemove}
-                    </Button>
+                    {["owner"].some(
+                        (c) => c == getMyPermission()
+                    ) ? (
+                        <Button
+                            mode="contained"
+                            style={{ marginTop: 10 }}
+                            onPress={() =>
+                                setDialogDelete({
+                                    show: true,
+                                    message: Strings.isDelete,
+                                })
+                            }
+                        >
+                            {Strings.genRemove}
+                        </Button>
+                    ) : null}
                 </View>
             </View>
             <Dialog
                 visible={dialogDelete.show}
-                onDismiss={() => setDialogDelete({ ...dialogDelete, show: false })}
+                onDismiss={() =>
+                    setDialogDelete({ ...dialogDelete, show: false })
+                }
             >
                 <Dialog.Title>{Strings.warning}</Dialog.Title>
                 <Dialog.Content>

@@ -20,6 +20,8 @@ import InvitesScreen from "./screens/InvitesScreen.js";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 
+console.disableYellowBox = true;
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 

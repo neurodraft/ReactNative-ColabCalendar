@@ -107,7 +107,7 @@ export default function ShareCalendarScreen({ route, navigation }) {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={{flex: 1, backgroundColor: "white"}}>
             <View style={formStyles.formContainer}>
                 <View style={formStyles.formElement}>
                     <TextInput
@@ -227,9 +227,9 @@ export default function ShareCalendarScreen({ route, navigation }) {
                 </View>
             </View>
 
-            <ScrollView style={formStyles.formContainer}>
+            <ScrollView style={{width: "80%"}}>
                 <List.Section>{listItems()}</List.Section>
             </ScrollView>
-        </View>
+        </ScrollView>
     );
 }
