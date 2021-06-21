@@ -36,8 +36,23 @@ export default new LocalizedStrings({
         // Login
         logLogin: 'Login',
         logEmail: 'Email',
+        logEmailLabel: 'Email...',
         logPassword: 'Password',
+        logPasswordLabel: 'Password...',
+        logVerifyPasswordLabel:'Verify password...',
         logEmailPlaceholder: 'usersemail@email.com',
+        logLoginButton: 'Log in',
+        logSignUp: 'Sign up',
+        logLogOut: 'Logout',
+        logLogOutButton: 'Log Out',
+
+        // Sign Up Screen Error Messages
+        suEmptyFields: 'Fields cannot be left blank',
+        suPasswordsNoMatch: 'Passwords do not match',
+
+        // Settings
+        setSettingsScreen: 'Settings Screen',
+
 
         // Home
         hoCalendar: 'Calendar',
@@ -81,6 +96,45 @@ export default new LocalizedStrings({
         utiNo: "No",
         utiSearch: "Search",
         utiConfirm: "Confirm",
+        utiCreateNew: "Create New",
+        utiEditCalendar: "Edit Calendar",
+
+        // Events
+        eveDaysEvents: "Day's Events",
+        eveNewEvent: "New Event",
+
+        // Invite Roles
+        invCollab: "Collaborate",
+        invView: "View",
+
+        // Months
+        months : [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ],
+
+        // Week Days
+        weekDays : [
+            "Sun", 
+            "Mon", 
+            "Tue", 
+            "Wed", 
+            "Thu", 
+            "Fri", 
+            "Sat"
+        ],
+
+
         emptyResults : 'No results found...'
     },
 
@@ -117,8 +171,22 @@ export default new LocalizedStrings({
         // Login
         logLogin: 'Entrar',
         logEmail: 'Email',
+        logEmailLabel: 'Email...',
         logPassword: 'Palavra-passe',
+        logPasswordLabel: 'Password...',
+        logVerifyPasswordLabel:'Verificar password...',
         lgEmailPlaceholder: 'usersemail@email.com',
+        logLoginButton: 'Entrar',
+        logSignUp: 'Registar',
+        logLogOut: 'Sair',
+        logLogOutButton: 'Sair',
+
+        // Sign Up Screen Error Messages
+        suEmptyFields: 'Campos em branco',
+        suPasswordsNoMatch: 'A confirmação da senha não corresponde',
+
+        // Settings
+        setSettingsScreen: 'Menu de opções',
 
         // Home
         hoCalendar: 'Calendário',
@@ -148,6 +216,45 @@ export default new LocalizedStrings({
         utiNo: "Não",
         utiSearch: "Procura",
         utiConfirm: "Confirmar",
+        utiCreateNew: "Criar Novo",
+        utiEditCalendar: "Editar Calendário",
+
+        // Events
+        eveDaysEvents: "Eventos do Dia",
+        eveNewEvent: "Novo Evento",
+
+        // Invite Roles
+        invCollab: "Colaborar",
+        invView: "Visualizar",
+
+        // Months
+        months : [
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro",
+        ],
+
+        // Week Days
+        weekDays : [
+            "Dom", 
+            "Seg", 
+            "Ter", 
+            "Qua", 
+            "Qui", 
+            "Sex", 
+            "Sab"
+        ],
+
+        
 
         evNewEvent: 'Novo evento',
         evEditEvent: 'Editar evento',

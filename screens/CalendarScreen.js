@@ -7,24 +7,12 @@ import { View, Text, TouchableHighlight, Button } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import MyCalendar from "../components/MyCalendar";
+import strings from "../constants/strings";
 
 import styles from "../styles/global";
 
 class CalendarScreen extends Component {
-    months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
+    months = strings.months;
 
     constructor(props) {
         super(props);

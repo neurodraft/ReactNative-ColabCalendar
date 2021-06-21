@@ -9,6 +9,8 @@ import NewEventScreen from "./NewEventScreen";
 import EditEventScreen from "./EditEventScreen";
 import CopyEventScreen from "./CopyEventScreen";
 
+import Strings from "../constants/strings";
+
 const Stack = createStackNavigator();
 
 class CalendarEventNavigator extends Component {
@@ -38,12 +40,12 @@ class CalendarEventNavigator extends Component {
                 <Stack.Screen
                     name="Day's Events"
                     component={DaysEventsScreen}
-                    options={{ title: "Day's Events" }}
+                    options={{ title: Strings.eveDaysEvents }}
                 />
                 <Stack.Screen
                     name="New Event"
                     component={NewEventScreen}
-                    options={{ title: "New Event" }}
+                    options={{ title: Strings.eveNewEvent }}
                 />
                  <Stack.Screen
                     name="edit-event"

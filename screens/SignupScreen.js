@@ -6,7 +6,7 @@ import { Snackbar, Title, TextInput, Button} from "react-native-paper";
 import firebase from "../firebase";
 import Calendar from '../services/Calendar';
 import User from "../services/User";
-
+import Strings from "../constants/strings";
 import styles from "../styles/global";
 
 export default function SignupScreen({ navigation }) {
@@ -20,13 +20,13 @@ export default function SignupScreen({ navigation }) {
 
         if([email, password, verifyPassword].some(input => !input))return setSnackbar({
             visible: true,
-            message: "Campos em branco",
+            message: Strings.suEmptyFields,
         });
 
         if(password != verifyPassword) {
             return setSnackbar({
                 visible: true,
-                message: "A confirmação da senha não corresponde",
+                message: Strings.suPasswordsNoMatch,
             });
         }
 
@@ -64,19 +64,19 @@ export default function SignupScreen({ navigation }) {
     return (
         <View style={styles.fullPageContainer}>
               <View style={{marginBottom : 20, alignItems: 'center'}}>
-                <Title>Sign up</Title>
+                <Title>{Strings.logSignUp}</Title>
             </View>
             <View style={{marginBottom : 20}}>              
                 <TextInput
                     mode="outlined"
-                    label="Email..."
+                    label={Strings.logEmailLabel}
                     value={email}
                     style={{marginBottom : 10}}
                     onChangeText={v => setEmail(v)}
                 />
                 <TextInput
                     mode="outlined"
-                    label="Password..."
+                    label={Strings.logPasswordLabel}
                     secureTextEntry={true}
                     value={password}
                     style={{marginBottom : 10}}
@@ -84,7 +84,7 @@ export default function SignupScreen({ navigation }) {
                 />                
                  <TextInput
                     mode="outlined"
-                    label="Verify password..."
+                    label={Strings.logVerifyPasswordLabel}
                     secureTextEntry={true}
                     value={verifyPassword}
                     onChangeText={v => setVerifyPassword(v)}
@@ -92,19 +92,19 @@ export default function SignupScreen({ navigation }) {
             </View>
             <View style={{marginBottom : 20}}>
                 <Button mode="contained" onPress={() => signUp()}>
-                    Sign up
+                    {Strings.logSignUp}
                 </Button>
             </View>
             <View style={{marginBottom : 20}}>
                 <Button mode="text" onPress={() => navigation.navigate('login')}>
-                    Log in
+                    {Strings.logLoginButton}
                 </Button>
             </View>
             <Snackbar
                 visible={snackbar.visible}
                 onDismiss={() => setSnackbar({ visible: false, message: "" })}
                 action={{
-                    label: "Close",
+                    label: Strings.genClose,
                     onPress: () => {
                         // Do something
                     },

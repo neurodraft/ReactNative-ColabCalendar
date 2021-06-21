@@ -17,6 +17,8 @@ import { Button, Title, Paragraph, Dialog } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import strings from "../constants/strings";
 
+import Strings from "../constants/strings";
+
 const Drawer = createDrawerNavigator();
 
 class CalendarDrawer extends Component {
@@ -233,7 +235,7 @@ function CustomDrawerContent(props) {
                         props.newCalendar();
                     }}
                 >
-                    New Calendar
+                    {Strings.utiCreateNew}
                 </Button>
             </View>
         </View>

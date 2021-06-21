@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Snackbar, Title, TextInput, Button} from "react-native-paper";
 
 import firebase from '../firebase';
-
+import Strings from "../constants/strings";
 import styles from "../styles/global";
 
 export default function LoginScreen({navigation}){
@@ -17,19 +17,19 @@ export default function LoginScreen({navigation}){
         <View style={styles.fullPageContainer}>
 
             <View style={{marginBottom : 20, alignItems: 'center'}}>
-                <Title>Login</Title>
+                <Title>{Strings.logLogin}</Title>
             </View>
             <View style={{marginBottom : 20}}>              
                 <TextInput
                     mode="outlined"
-                    label="Email..."
+                    label={Strings.logEmailLabel}
                     value={email}
                     style={{marginBottom : 10}}
                     onChangeText={v => setEmail(v)}
                 />
                 <TextInput
                     mode="outlined"
-                    label="Password..."
+                    label={Strings.logPasswordLabel}
                     value={password}
                     secureTextEntry={true}
                     style={{marginBottom : 10}}
@@ -48,19 +48,19 @@ export default function LoginScreen({navigation}){
                             })
                         );
                 }}>
-                    Log in
+                    {Strings.logLoginButton}
                 </Button>
             </View>
             <View style={{marginBottom : 20}}>
                 <Button mode="text" onPress={() => navigation.navigate('signup')}>
-                    Sign up
+                    {Strings.logSignUp}
                 </Button>
             </View>
             <Snackbar
                 visible={snackbar.visible}
                 onDismiss={() => setSnackbar({ visible: false, message: "" })}
                 action={{
-                    label: "Close",
+                    label: Strings.genClose,
                     onPress: () => {
                         // Do something
                     },

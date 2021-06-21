@@ -10,6 +10,7 @@ import {
 
 import styles from "../styles/global";
 import formStyles from "../styles/form";
+import Strings from "../constants/strings";
 
 import Strings from "../constants/strings";
 import firebase from "../firebase";
